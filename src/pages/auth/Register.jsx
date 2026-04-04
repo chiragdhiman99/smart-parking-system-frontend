@@ -171,7 +171,7 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/signup", {
+      const res = await axios.post("https://smart-parking-system-backend-oco6.onrender.com/api/auth/signup", {
         fullName: form.fullName,
         email: form.email,
         password: form.password,
@@ -229,7 +229,7 @@ const Register = () => {
                 onClick={() => {
                   setShowRolePopup(false);
                   window.location.href =
-                    "http://localhost:5000/api/auth/google?role=driver";
+                    "https://smart-parking-system-backend-oco6.onrender.com/api/auth/google?role=driver";
                 }}
                 className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold py-4 rounded-xl text-base transition-all cursor-pointer"
               >
@@ -239,7 +239,7 @@ const Register = () => {
                 onClick={() => {
                   setShowRolePopup(false);
                   window.location.href =
-                    "http://localhost:5000/api/auth/google?role=owner";
+                    "https://smart-parking-system-backend-oco6.onrender.com/api/auth/google?role=owner";
                 }}
                 className="w-full border-2 border-gray-200 hover:border-green-400 text-gray-700 font-bold py-4 rounded-xl text-base transition-all cursor-pointer"
               >

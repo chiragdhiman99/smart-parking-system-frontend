@@ -114,7 +114,7 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/parkings").then((response) => {
+    axios.get("https://smart-parking-system-backend-oco6.onrender.com/api/parkings").then((response) => {
       let data = response.data.filter(
         (parking) => parking.status === "approved",
       );

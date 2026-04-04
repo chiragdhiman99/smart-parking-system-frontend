@@ -5,7 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 import { io } from "socket.io-client";
-const socket = io("http://localhost:5000");
+const socket = io("https://smart-parking-system-backend-oco6.onrender.com");
 
 const paymentMethods = [
   {
@@ -92,7 +92,7 @@ export default function Payment() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/auth/user/${userid}`, { userid })
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${userid}`, { userid })
       .then((res) => {
         setUserinfo(res.data);
       })
@@ -104,7 +104,7 @@ export default function Payment() {
   const handlePayment = async () => {
     try {
       const res = await fetch(
-        "http://localhost:5000/api/payment/create-order",
+        "https://smart-parking-system-backend-oco6.onrender.com/api/payment/create-order",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -123,7 +123,7 @@ export default function Payment() {
 
         handler: async function (response) {
           const verifyRes = await fetch(
-            "http://localhost:5000/api/payment/verify",
+            "https://smart-parking-system-backend-oco6.onrender.com/api/payment/verify",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -150,7 +150,7 @@ export default function Payment() {
               },
             });
             axios
-              .post("http://localhost:5000/confirm-booking", {
+              .post("https://smart-parking-system-backend-oco6.onrender.com/confirm-booking", {
                 username: userinfo.fullName,
                 email: userinfo.email,
                 slot: userdetails?.slot?.label,
@@ -171,7 +171,7 @@ export default function Payment() {
           }
 
           axios
-            .post("http://localhost:5000/api/bookings/create/booking", {
+            .post("https://smart-parking-system-backend-oco6.onrender.com/api/bookings/create/booking", {
               userName: userinfo.fullName,
               userEmail: userinfo.email,
               parkingid: userdetails.parkingid,

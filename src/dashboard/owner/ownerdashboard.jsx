@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import { useCallback } from "react";
+import { lazy, Suspense } from "react";
 import AddParkingForm from "./components/addparking";
 import OwnerSidebar, { navItems, getInitials } from "./components/OwnerSidebar";
 import { EditParkingModal } from "./components/OwnerModals";
@@ -47,7 +48,7 @@ const OwnerDashboard = () => {
   useEffect(() => {
     if (!decoded) return;
     axios
-      .get(`http://localhost:5000/api/auth/user/${decoded.userId}`, {
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setUserData(res.data))
@@ -59,7 +60,7 @@ const OwnerDashboard = () => {
   useEffect(() => {
     if (!decoded?.userId) return;
     axios
-      .get(`http://localhost:5000/api/parkings/owner/${decoded.userId}`)
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings/owner/${decoded.userId}`)
       .then((res) => setOwnerParking(res.data))
       .catch(() =>
         toast.error("Failed to fetch your parkings. Please try again."),
@@ -74,7 +75,7 @@ const OwnerDashboard = () => {
   useEffect(() => {
     if (!decoded?.userId) return;
     axios
-      .get(`http://localhost:5000/api/bookings/${decoded.userId}`)
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/bookings/${decoded.userId}`)
       .then((res) => setUserBookings(res.data))
       .catch(() =>
         toast.error("Failed to fetch your bookings. Please try again."),
@@ -84,7 +85,7 @@ const OwnerDashboard = () => {
   useEffect(() => {
     if (!decoded?.userId) return;
     axios
-      .get(`http://localhost:5000/api/notifications/${decoded.userId}`)
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/${decoded.userId}`)
       .then((res) =>
         setNotifications(res.data.filter((n) => n.role === "owner")),
       )
@@ -93,21 +94,21 @@ const OwnerDashboard = () => {
       );
   }, []);
 
-  const markAllRead = () => {
+  const markAllRead = useCallback(() => {
     axios
-      .put(`http://localhost:5000/api/notifications/read/${decoded.userId}`)
+      .put(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/${decoded.userId}`)
       .then(() =>
         setNotifications((prev) => prev.map((n) => ({ ...n, isread: true }))),
       )
       .catch(() =>
         toast.error("Failed to mark notifications as read. Please try again."),
       );
-  };
+  }, [decoded?.userId]);
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     axios
       .put(
-        `http://localhost:5000/api/auth/user/${decoded.userId}`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`,
         { fullName: editName, phone: editPhone },
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -117,9 +118,9 @@ const OwnerDashboard = () => {
         toast.success("Profile updated successfully!");
       })
       .catch(() => toast.error("Failed to update profile. Please try again."));
-  };
+  }, [decoded?.userId, editName, editPhone, token]);
 
-  const handleEdit = (parking) => {
+  const handleEdit = useCallback((parking) => {
     setEditingParking(parking);
     setEditForm({
       name: parking.name,
@@ -137,12 +138,12 @@ const OwnerDashboard = () => {
       fourWheelerSlots: parking.fourWheelerSlots || 0,
       twoWheelerSlots: parking.twoWheelerSlots || 0,
     });
-  };
+  }, []);
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = useCallback(() => {
     axios
       .put(
-        `http://localhost:5000/api/parkings/${editingParking._id}`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${editingParking._id}`,
         {
           name: editForm.name,
           address: editForm.address,
@@ -177,34 +178,42 @@ const OwnerDashboard = () => {
         toast.success("Parking updated successfully!");
       })
       .catch(() => toast.error("Failed to update parking. Please try again."));
-  };
+  }, [editingParking, editForm, token]);
 
-  const handleDeleteParking = (parkingId) => {
-    axios
-      .delete(`http://localhost:5000/api/parkings/${parkingId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        setOwnerParking((prev) => prev.filter((p) => p._id !== parkingId));
-        toast.success("Parking deleted successfully!");
-      })
-      .catch(() => toast.error("Failed to delete parking. Please try again."));
-  };
+  const handleDeleteParking = useCallback(
+    (parkingId) => {
+      axios
+        .delete(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${parkingId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(() => {
+          setOwnerParking((prev) => prev.filter((p) => p._id !== parkingId));
+          toast.success("Parking deleted successfully!");
+        })
+        .catch(() =>
+          toast.error("Failed to delete parking. Please try again."),
+        );
+    },
+    [token],
+  );
 
-  const totalearnings = userbookings.reduce(
-    (total, b) => total + Number(b.amount.replace("₹", "")),
-    0,
-  );
-  const totalslots = ownerparking.reduce(
-    (total, p) => total + p.availableSlots,
-    0,
-  );
-  const filteredBookings =
-    bookingFilter === "All"
+  const totalearnings = useMemo(() => {
+    return userbookings.reduce(
+      (total, b) => total + Number(b.amount.replace("₹", "")),
+      0,
+    );
+  }, [userbookings]);
+
+  const totalslots = useMemo(() => {
+    return ownerparking.reduce((total, p) => total + p.availableSlots, 0);
+  }, [ownerparking]);
+  const filteredBookings = useMemo(() => {
+    return bookingFilter === "All"
       ? userbookings
       : userbookings.filter(
           (b) => b.bookingStatus?.toLowerCase() === bookingFilter.toLowerCase(),
         );
+  }, [userbookings, bookingFilter]);
 
   const map = {};
   userbookings.forEach((b) => {

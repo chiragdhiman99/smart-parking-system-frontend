@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
@@ -20,7 +21,7 @@ const Testimonials = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/reviews")
+      .get("https://smart-parking-system-backend-oco6.onrender.com/api/reviews")
       .then((res) => {
         setReviews(
           res.data.reviews.slice(0, 3).map((r, i) => ({

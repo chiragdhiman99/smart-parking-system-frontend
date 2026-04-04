@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useCallback } from "react";
 
 const slotStatusStyle = {
   available:
@@ -43,10 +44,13 @@ const SlotGrid = ({
   const bikeLeftRows = chunk(bikeLeft, 2);
   const bikeRightRows = chunk(bikeRight, 2);
 
-  const handleSelect = (slot) => {
-    if (slot.status !== "available") return;
-    setSelectedSlot(selectedSlot?.id === slot.id ? null : slot);
-  };
+  const handleSelect = useCallback(
+    (slot) => {
+      if (slot.status !== "available") return;
+      setSelectedSlot(selectedSlot?.id === slot.id ? null : slot);
+    },
+    [selectedSlot, setSelectedSlot],
+  );
 
   const SlotBox = ({ slot, isWide }) => (
     <div
@@ -70,9 +74,12 @@ const SlotGrid = ({
       className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6"
     >
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-sm sm:text-base font-black text-gray-900">Live Slot Grid</h2>
+        <h2 className="text-sm sm:text-base font-black text-gray-900">
+          Live Slot Grid
+        </h2>
         <span className="flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-full">
-          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> LIVE
+          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />{" "}
+          LIVE
         </span>
       </div>
       <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 sm:mb-5">
@@ -81,7 +88,6 @@ const SlotGrid = ({
 
       <div className="w-full overflow-x-auto pb-2">
         <div className="flex gap-2 sm:gap-3 min-w-max mx-auto w-fit px-1">
-
           {carSlots.length > 0 && (
             <div className="flex-shrink-0">
               <p className="text-[10px] sm:text-xs font-bold text-green-600 mb-2 text-center">
@@ -105,13 +111,19 @@ const SlotGrid = ({
           <div className="flex-shrink-0 flex flex-col items-center w-7 sm:w-10">
             <p
               className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-2"
-              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+              style={{
+                writingMode: "vertical-rl",
+                transform: "rotate(180deg)",
+              }}
             >
               Driver Lane
             </p>
             <div className="flex-1 w-full bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-evenly py-3 min-h-[80px] sm:min-h-[100px]">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="w-4 sm:w-6 h-1.5 sm:h-2 bg-gray-200 rounded-full" />
+                <div
+                  key={i}
+                  className="w-4 sm:w-6 h-1.5 sm:h-2 bg-gray-200 rounded-full"
+                />
               ))}
             </div>
           </div>
@@ -137,13 +149,19 @@ const SlotGrid = ({
             <div className="flex-shrink-0 flex flex-col items-center w-6 sm:w-8">
               <p
                 className="text-[8px] sm:text-[9px] font-bold text-blue-300 uppercase mb-2"
-                style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+                style={{
+                  writingMode: "vertical-rl",
+                  transform: "rotate(180deg)",
+                }}
               >
                 Aisle
               </p>
               <div className="flex-1 w-full bg-blue-50 border-2 border-dashed border-blue-100 rounded-xl flex flex-col items-center justify-evenly py-3 min-h-[80px] sm:min-h-[100px]">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="w-3 sm:w-4 h-1 sm:h-1.5 bg-blue-100 rounded-full" />
+                  <div
+                    key={i}
+                    className="w-3 sm:w-4 h-1 sm:h-1.5 bg-blue-100 rounded-full"
+                  />
                 ))}
               </div>
             </div>
@@ -175,8 +193,13 @@ const SlotGrid = ({
           { color: "bg-yellow-500", label: "Reserved" },
           { color: "bg-gray-300", label: "Maintenance" },
         ].map((item, i) => (
-          <div key={i} className="flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-500">
-            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${item.color} rounded-sm`} />
+          <div
+            key={i}
+            className="flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-500"
+          >
+            <span
+              className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${item.color} rounded-sm`}
+            />
             {item.label}
           </div>
         ))}

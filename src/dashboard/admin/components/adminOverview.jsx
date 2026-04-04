@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
+import { useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -57,13 +58,15 @@ const AdminOverview = ({
 }) => {
   const occupied = totalslots - occupiedslots;
 
-  const totalRevenue = bookingdata.reduce((total, booking) => {
-    const amt =
-      typeof booking.amount === "string"
-        ? Number(booking.amount.replace("₹", "").trim())
-        : Number(booking.amount || 0);
-    return total + (isNaN(amt) ? 0 : amt);
-  }, 0);
+  const totalRevenue = useMemo(() => {
+    return bookingdata.reduce((total, booking) => {
+      const amt =
+        typeof booking.amount === "string"
+          ? Number(booking.amount.replace("₹", "").trim())
+          : Number(booking.amount || 0);
+      return total + (isNaN(amt) ? 0 : amt);
+    }, 0);
+  }, [bookingdata]);
 
   const stats = [
     {
@@ -114,14 +117,11 @@ const AdminOverview = ({
               {stat.icon}
             </div>
             <p className="text-2xl font-black text-gray-900">
-              {
-                typeof stat.value === "number" ? (
-                  <CountUp start={0} end={stat.value}  prefix={stat.prefix} />
-                ) : (
-                  stat.value
-                )
-              }
-            
+              {typeof stat.value === "number" ? (
+                <CountUp start={0} end={stat.value} prefix={stat.prefix} />
+              ) : (
+                stat.value
+              )}
             </p>
             <p className="text-xs text-gray-400 mt-0.5">{stat.label}</p>
           </motion.div>

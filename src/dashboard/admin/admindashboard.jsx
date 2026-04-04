@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { jwtDecode } from "jwt-decode";
+import { lazy } from 'react';
 import axios from "axios";
 import toast from "react-hot-toast";
-import AdminOverview from "./components/adminOverview";
+const AdminOverview = lazy(() => import("./components/adminOverview"));
 import AdminSections from "./components/adminSection";
 import ManageParkingLocations from "./components/parkinglocation";
 import PricingGuidelines from "./PricingGuidelines";
@@ -62,7 +63,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/admin/user/${decoded?.id}`, {
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/admin/user/${decoded?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setUserData(res.data))
@@ -75,7 +76,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/bookings/get/bookingsss`)
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/bookings/get/bookingsss`)
       .then((res) => {
         const occupied = res.data.filter(
           (b) => b.bookingStatus === "confirmed",
@@ -109,7 +110,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/parkings`, {
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -128,7 +129,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/auth/users`, {
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/auth/users`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setAllUsers(res.data))
@@ -137,7 +138,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/notifications`)
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications`)
       .then((res) => {
         const filtered = res.data
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -149,7 +150,7 @@ const AdminDashboard = () => {
 
   const markAllRead = () => {
     axios
-      .put(`http://localhost:5000/api/notifications/read/role/admin`)
+      .put(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/role/admin`)
       .then(() =>
         setNotifications((prev) => prev.map((n) => ({ ...n, isread: true }))),
       )
@@ -345,6 +346,7 @@ const AdminDashboard = () => {
 
         <div className="p-6 max-w-6xl mx-auto">
           {activeNav === "overview" && (
+            <Suspense fallback={<div>Loading...</div>}>
             <AdminOverview
               bookingdata={bookingdata}
               parkingData={parkingData}
@@ -354,6 +356,7 @@ const AdminDashboard = () => {
               linedata={linedata}
               setActiveNav={setActiveNav}
             />
+            </Suspense>
           )}
           {(activeNav === "bookings" ||
             activeNav === "owners" ||

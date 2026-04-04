@@ -62,7 +62,7 @@ const AdminSections = ({
   const handleCancelBooking = async (bookingid) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/bookings/cancel/${bookingid}`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/bookings/cancel/${bookingid}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -81,7 +81,7 @@ const AdminSections = ({
   const handleVerifyOwner = (parkingId, status) => {
     axios
       .put(
-        `http://localhost:5000/api/parkings/update/${parkingId}`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/update/${parkingId}`,
         { status },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -101,7 +101,7 @@ const AdminSections = ({
     setBanLoading(userId);
     axios
       .put(
-        `http://localhost:5000/api/auth/user/${userId}/status`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${userId}/status`,
         { status: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -125,7 +125,7 @@ const AdminSections = ({
   const handleSave = () => {
     axios
       .put(
-        `http://localhost:5000/api/auth/user/${decoded.userId}`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`,
         { fullName: editName, phone: editPhone },
         { headers: { Authorization: `Bearer ${token}` } },
       )

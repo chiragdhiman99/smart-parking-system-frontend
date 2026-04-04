@@ -91,7 +91,7 @@ export default function BookingReceipt() {
           }}
         >
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/search")}
             style={{
               display: "flex",
               alignItems: "center",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useMemo } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
@@ -22,7 +22,7 @@ const ManageParkingLocations = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/parkings`, {
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -35,7 +35,7 @@ const ManageParkingLocations = () => {
   const handleStatusChange = (parkingId, status) => {
     axios
       .put(
-        `http://localhost:5000/api/parkings/update/${parkingId}`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/update/${parkingId}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -55,7 +55,7 @@ const ManageParkingLocations = () => {
   const handleEditSave = (parkingId, updatedData) => {
     axios
       .put(
-        `http://localhost:5000/api/parkings/update/${parkingId}`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/update/${parkingId}`,
         updatedData,
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -70,7 +70,7 @@ const ManageParkingLocations = () => {
 
   const handleDelete = (parkingId) => {
     axios
-      .delete(`http://localhost:5000/api/parkings/${parkingId}`, {
+      .delete(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${parkingId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
@@ -80,17 +80,29 @@ const ManageParkingLocations = () => {
       .catch(() => toast.error("Failed to delete parking. Please try again."));
   };
 
-  const filtered = parkings.filter((p) =>
-    filter === "all" ? true : p.status === filter,
-  );
-  const totalSlots = parkings.reduce(
-    (acc, p) =>
-      acc + Number(p.twoWheelerSlots || 0) + Number(p.fourWheelerSlots || 0),
-    0,
-  );
-  const approvedCount = parkings.filter((p) => p.status === "approved").length;
-  const pendingCount = parkings.filter((p) => p.status === "pending").length;
+  const filtered = useMemo(() => {
+    return parkings.filter((p) =>
+      filter === "all" ? true : p.status === filter,
+    );
+  }, [parkings, filter]);
 
+
+  const totalSlots = useMemo(() => {
+    return parkings.reduce(
+      (acc, p) =>
+        acc + Number(p.twoWheelerSlots || 0) + Number(p.fourWheelerSlots || 0),
+      0,
+    );
+  }, [parkings]);
+
+
+  const approvedCount = useMemo(() => {
+    return parkings.filter((p) => p.status === "approved").length;
+  }, [parkings]);
+
+  const pendingCount = useMemo(() => {
+    return parkings.filter((p) => p.status === "pending").length;
+  }, [parkings]);
   if (loading)
     return (
       <div className="flex items-center justify-center py-20">
@@ -106,10 +118,30 @@ const ManageParkingLocations = () => {
     >
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
-          { label: "Total Locations", value: parkings.length, icon: "📍", color: "bg-blue-50 text-blue-700" },
-          { label: "Total Slots", value: totalSlots, icon: "🅿️", color: "bg-yellow-50 text-yellow-700" },
-          { label: "Approved", value: approvedCount, icon: "✅", color: "bg-green-50 text-green-700" },
-          { label: "Pending Approval", value: pendingCount, icon: "⏳", color: "bg-red-50 text-red-600" },
+          {
+            label: "Total Locations",
+            value: parkings.length,
+            icon: "📍",
+            color: "bg-blue-50 text-blue-700",
+          },
+          {
+            label: "Total Slots",
+            value: totalSlots,
+            icon: "🅿️",
+            color: "bg-yellow-50 text-yellow-700",
+          },
+          {
+            label: "Approved",
+            value: approvedCount,
+            icon: "✅",
+            color: "bg-green-50 text-green-700",
+          },
+          {
+            label: "Pending Approval",
+            value: pendingCount,
+            icon: "⏳",
+            color: "bg-red-50 text-red-600",
+          },
         ].map((stat, i) => (
           <motion.div
             key={i}
@@ -118,11 +150,17 @@ const ManageParkingLocations = () => {
             transition={{ delay: i * 0.08 }}
             className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100"
           >
-            <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-base sm:text-lg mb-2 sm:mb-3 ${stat.color}`}>
+            <div
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-base sm:text-lg mb-2 sm:mb-3 ${stat.color}`}
+            >
               {stat.icon}
             </div>
-            <p className="text-xl sm:text-2xl font-black text-gray-900">{stat.value}</p>
-            <p className="text-[11px] sm:text-xs text-gray-400 mt-0.5">{stat.label}</p>
+            <p className="text-xl sm:text-2xl font-black text-gray-900">
+              {stat.value}
+            </p>
+            <p className="text-[11px] sm:text-xs text-gray-400 mt-0.5">
+              {stat.label}
+            </p>
           </motion.div>
         ))}
       </div>
@@ -146,7 +184,9 @@ const ManageParkingLocations = () => {
       {filtered.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center">
           <p className="text-3xl mb-3">📍</p>
-          <p className="text-sm font-bold text-gray-500">No parking locations found</p>
+          <p className="text-sm font-bold text-gray-500">
+            No parking locations found
+          </p>
         </div>
       ) : (
         <div className="flex flex-col gap-3 sm:gap-4">
@@ -172,18 +212,32 @@ const ManageParkingLocations = () => {
               >
                 <div className="p-4 sm:p-5 flex items-start gap-3 sm:gap-4">
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0">
-                    <span className="text-base sm:text-lg font-black text-red-600">{initials}</span>
+                    <span className="text-base sm:text-lg font-black text-red-600">
+                      {initials}
+                    </span>
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                      <p className="text-sm sm:text-base font-black text-gray-900">{parking.name || "—"}</p>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${statusStyle[parking.status] || "bg-gray-100 text-gray-500 border border-gray-200"}`}>
-                        {parking.status === "approved" ? "✅ Approved" : parking.status === "rejected" ? "❌ Rejected" : "⏳ Pending"}
+                      <p className="text-sm sm:text-base font-black text-gray-900">
+                        {parking.name || "—"}
+                      </p>
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${statusStyle[parking.status] || "bg-gray-100 text-gray-500 border border-gray-200"}`}
+                      >
+                        {parking.status === "approved"
+                          ? "✅ Approved"
+                          : parking.status === "rejected"
+                            ? "❌ Rejected"
+                            : "⏳ Pending"}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-400 truncate">{parking.address}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">👤 {parking.ownerName || parking.owner || "Owner"}</p>
+                    <p className="text-xs text-gray-400 truncate">
+                      {parking.address}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      👤 {parking.ownerName || parking.owner || "Owner"}
+                    </p>
                   </div>
 
                   {parking.status === "approved" && (
@@ -198,7 +252,17 @@ const ManageParkingLocations = () => {
                         onClick={() => setDeleteModal(parking)}
                         className="px-3 py-1.5 rounded-xl text-xs font-bold border border-red-200 text-red-500 bg-red-50 hover:bg-red-500 hover:text-white transition cursor-pointer flex items-center gap-1.5"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="13"
+                          height="13"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <polyline points="3 6 5 6 21 6" />
                           <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
                           <path d="M10 11v6M14 11v6" />
@@ -212,28 +276,48 @@ const ManageParkingLocations = () => {
 
                 {parking.status === "approved" && (
                   <div className="flex sm:hidden gap-2 px-4 pb-3">
-                    <button onClick={() => setEditModal(parking)} className="flex-1 py-2 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:bg-gray-50 transition cursor-pointer">✏️ Edit</button>
-                    <button onClick={() => setDeleteModal(parking)} className="flex-1 py-2 rounded-xl text-xs font-bold border border-red-200 text-red-500 bg-red-50 hover:bg-red-500 hover:text-white transition cursor-pointer">🗑️ Delete</button>
+                    <button
+                      onClick={() => setEditModal(parking)}
+                      className="flex-1 py-2 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:bg-gray-50 transition cursor-pointer"
+                    >
+                      ✏️ Edit
+                    </button>
+                    <button
+                      onClick={() => setDeleteModal(parking)}
+                      className="flex-1 py-2 rounded-xl text-xs font-bold border border-red-200 text-red-500 bg-red-50 hover:bg-red-500 hover:text-white transition cursor-pointer"
+                    >
+                      🗑️ Delete
+                    </button>
                   </div>
                 )}
 
                 <div className="mx-4 sm:mx-5 mb-4 bg-gray-50 rounded-xl px-3 sm:px-4 py-3 grid grid-cols-3 gap-2 sm:gap-4">
                   <div>
-                    <p className="text-[10px] text-gray-400 mb-0.5">Total Slots</p>
-                    <p className="text-xs sm:text-sm font-black text-gray-900">{slots}</p>
+                    <p className="text-[10px] text-gray-400 mb-0.5">
+                      Total Slots
+                    </p>
+                    <p className="text-xs sm:text-sm font-black text-gray-900">
+                      {slots}
+                    </p>
                   </div>
                   <div>
                     <p className="text-[10px] text-gray-400 mb-0.5">2W Price</p>
                     <p className="text-[11px] sm:text-sm font-black text-gray-900">
                       ₹{parking.pricing?.["2-wheeler"]?.hourly || "—"}/hr
-                      <span className="hidden sm:inline"> · ₹{parking.pricing?.["2-wheeler"]?.daily || "—"}/day</span>
+                      <span className="hidden sm:inline">
+                        {" "}
+                        · ₹{parking.pricing?.["2-wheeler"]?.daily || "—"}/day
+                      </span>
                     </p>
                   </div>
                   <div>
                     <p className="text-[10px] text-gray-400 mb-0.5">4W Price</p>
                     <p className="text-[11px] sm:text-sm font-black text-gray-900">
                       ₹{parking.pricing?.["4-wheeler"]?.hourly || "—"}/hr
-                      <span className="hidden sm:inline"> · ₹{parking.pricing?.["4-wheeler"]?.daily || "—"}/day</span>
+                      <span className="hidden sm:inline">
+                        {" "}
+                        · ₹{parking.pricing?.["4-wheeler"]?.daily || "—"}/day
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -242,7 +326,9 @@ const ManageParkingLocations = () => {
                   <div className="mx-4 sm:mx-5 mb-4">
                     <div className="flex justify-between mb-1">
                       <p className="text-[10px] text-gray-400">Occupancy</p>
-                      <p className="text-[10px] text-gray-400 font-bold">{parking.occupiedSlots}/{slots} occupied</p>
+                      <p className="text-[10px] text-gray-400 font-bold">
+                        {parking.occupiedSlots}/{slots} occupied
+                      </p>
                     </div>
                     <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                       <div
@@ -253,7 +339,9 @@ const ManageParkingLocations = () => {
                               ? "bg-yellow-400"
                               : "bg-green-400"
                         }`}
-                        style={{ width: `${(parking.occupiedSlots / slots) * 100}%` }}
+                        style={{
+                          width: `${(parking.occupiedSlots / slots) * 100}%`,
+                        }}
                       />
                     </div>
                   </div>
@@ -261,14 +349,35 @@ const ManageParkingLocations = () => {
 
                 {parking.status === "pending" && (
                   <div className="flex gap-2 px-4 sm:px-5 pb-4">
-                    <button onClick={() => handleStatusChange(parking._id, "approved")} className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-200 hover:bg-green-500 hover:text-white transition-all duration-200 cursor-pointer">✅ Approve</button>
-                    <button onClick={() => handleStatusChange(parking._id, "rejected")} className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-red-50 text-red-500 border border-red-200 hover:bg-red-500 hover:text-white transition-all duration-200 cursor-pointer">❌ Reject</button>
+                    <button
+                      onClick={() =>
+                        handleStatusChange(parking._id, "approved")
+                      }
+                      className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-200 hover:bg-green-500 hover:text-white transition-all duration-200 cursor-pointer"
+                    >
+                      ✅ Approve
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleStatusChange(parking._id, "rejected")
+                      }
+                      className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-red-50 text-red-500 border border-red-200 hover:bg-red-500 hover:text-white transition-all duration-200 cursor-pointer"
+                    >
+                      ❌ Reject
+                    </button>
                   </div>
                 )}
 
                 {parking.status === "rejected" && (
                   <div className="px-4 sm:px-5 pb-4">
-                    <button onClick={() => handleStatusChange(parking._id, "approved")} className="w-full py-2.5 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-200 hover:bg-green-500 hover:text-white transition-all duration-200 cursor-pointer">✅ Approve Now</button>
+                    <button
+                      onClick={() =>
+                        handleStatusChange(parking._id, "approved")
+                      }
+                      className="w-full py-2.5 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-200 hover:bg-green-500 hover:text-white transition-all duration-200 cursor-pointer"
+                    >
+                      ✅ Approve Now
+                    </button>
                   </div>
                 )}
               </motion.div>

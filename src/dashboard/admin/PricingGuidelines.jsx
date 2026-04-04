@@ -24,7 +24,7 @@ const PricingGuidelines = () => {
     guidelines["4-wheeler"].daily.max;
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/pricing`, {
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/pricing`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -73,7 +73,7 @@ const PricingGuidelines = () => {
   const handleSave = () => {
     setSaving(true);
     axios
-      .put(`http://localhost:5000/api/pricing`, guidelines, {
+      .put(`https://smart-parking-system-backend-oco6.onrender.com/api/pricing`, guidelines, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

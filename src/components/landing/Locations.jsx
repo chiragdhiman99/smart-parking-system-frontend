@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
+
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
@@ -21,7 +23,7 @@ const Locations = () => {
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    const url = "http://localhost:5000/api/parkings";
+    const url = "https://smart-parking-system-backend-oco6.onrender.com/api/parkings";
     axios
       .get(url)
       .then((res) => {

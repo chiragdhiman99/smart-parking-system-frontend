@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { jwtDecode } from "jwt-decode";
@@ -61,7 +61,7 @@ const DriverDashboard = () => {
   useEffect(() => {
     if (!decoded) return;
     axios
-      .get(`http://localhost:5000/api/auth/user/${decoded.userId}`, {
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setUserData(res.data))
@@ -73,7 +73,7 @@ const DriverDashboard = () => {
   useEffect(() => {
     if (!userData?.email) return;
     axios
-      .get("http://localhost:5000/api/bookings/get/booking", {
+      .get("https://smart-parking-system-backend-oco6.onrender.com/api/bookings/get/booking", {
         params: { userEmail: userData.email },
       })
       .then((res) => setBookingData(res.data))
@@ -85,7 +85,7 @@ const DriverDashboard = () => {
   useEffect(() => {
     if (!decoded) return;
     axios
-      .get(`http://localhost:5000/api/notifications/${decoded.userId}`)
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/${decoded.userId}`)
       .then((res) => {
         setNotifications(res.data.filter((n) => n.role === "user"));
       })
@@ -96,7 +96,7 @@ const DriverDashboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/reviews")
+      .get("https://smart-parking-system-backend-oco6.onrender.com/api/reviews")
       .then((res) => {
         const reviews = res.data.reviews;
         setAllReviews(reviews);
@@ -112,7 +112,7 @@ const DriverDashboard = () => {
   const handleSave = () => {
     axios
       .put(
-        `http://localhost:5000/api/auth/user/${decoded.userId}`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`,
         { fullName: editName, phone: editPhone, role: "driver" },
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -128,7 +128,7 @@ const DriverDashboard = () => {
     if (!reportText.trim()) return;
     setReportSubmitting(true);
     try {
-      await axios.post("http://localhost:5000/api/notifications", {
+      await axios.post("https://smart-parking-system-backend-oco6.onrender.com/api/notifications", {
         userId: decoded.userId,
         message: `🚨 Issue Reported by ${userData.fullName}: "${reportText}" — Slot ${reportModal.slot} | Booking ID: ${reportModal._id}`,
         isread: false,
@@ -145,7 +145,7 @@ const DriverDashboard = () => {
 
   const markAllRead = () => {
     axios
-      .put(`http://localhost:5000/api/notifications/read/${decoded.userId}`)
+      .put(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/${decoded.userId}`)
       .then(() =>
         setNotifications((prev) => prev.map((n) => ({ ...n, isread: true }))),
       )
@@ -157,7 +157,7 @@ const DriverDashboard = () => {
   const handleCancelBooking = async (bookingid) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/bookings/cancel/${bookingid}`,
+        `https://smart-parking-system-backend-oco6.onrender.com/api/bookings/cancel/${bookingid}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -175,7 +175,7 @@ const DriverDashboard = () => {
 
   const handlereviewsubmit = () => {
     axios
-      .post("http://localhost:5000/api/reviews", {
+      .post("https://smart-parking-system-backend-oco6.onrender.com/api/reviews", {
         userId: decoded.userId,
         userName: userData.fullName,
         parkingId: reviewModal.parkingid,
@@ -193,22 +193,30 @@ const DriverDashboard = () => {
       .catch(() => toast.error("Failed to submit review. Please try again."));
   };
 
-  const filteredBookings = bookingdata.filter((b) =>
-    filter === "all" ? true : b.bookingStatus === filter,
-  );
+  const filteredBookings = useMemo(() => {
+    return bookingdata.filter((b) =>
+      filter === "all" ? true : b.bookingStatus === filter,
+    );
+  }, [bookingdata, filter]);
 
-  const totalspent = bookingdata.reduce(
-    (total, booking) => total + Number(booking.amount.replace("₹", "")),
-    0,
-  );
+  const totalspent = useMemo(() => {
+    return bookingdata.reduce(
+      (total, booking) => total + Number(booking.amount.replace("₹", "")),
+      0,
+    );
+  }, [bookingdata]);
 
-  const myReviews = allreviews.filter((r) => r.userId === decoded?.userId);
-  const myAvgRating =
-    myReviews.length > 0
+  const myReviews = useMemo(() => {
+    return allreviews.filter((r) => r.userId === decoded?.userId);
+  }, [allreviews, decoded?.userId]);
+  
+  const myAvgRating = useMemo(() => {
+    return myReviews.length > 0
       ? (
           myReviews.reduce((sum, r) => sum + r.rating, 0) / myReviews.length
         ).toFixed(1)
       : "N/A";
+  }, [myReviews]);
 
   if (!userData)
     return (

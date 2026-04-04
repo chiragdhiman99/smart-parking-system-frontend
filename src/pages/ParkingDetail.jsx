@@ -53,7 +53,7 @@ const ParkingDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/parkings/${parkingid}`)
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${parkingid}`)
       .then((response) => {
         const total =
           Number(response.data.twoWheelerSlots) +
@@ -72,7 +72,7 @@ const ParkingDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/bookings/parking/${parkingid}`)
+      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/bookings/parking/${parkingid}`)
       .then((response) => {
         const arr = response.data
           .filter((slot) => slot.bookingStatus === "confirmed")

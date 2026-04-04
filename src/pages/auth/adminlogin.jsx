@@ -28,7 +28,7 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      const url = "http://localhost:5000/api/admin/login";
+      const url = "https://smart-parking-system-backend-oco6.onrender.com/api/admin/login";
 
       const res = await axios.post(url, {
         email,

@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useCallback } from "react";
 const BookingCard = ({
   parking,
   theme,
@@ -51,7 +52,25 @@ const BookingCard = ({
 
   const [errors, setErrors] = useState({});
 
-  const validate = () => {
+  // ✅ totalPrice moved here — BEFORE handleconfirm
+  const fromhour = parseInt(fromTime.split(":")[0]);
+  const day = new Date(bookingDate).getDay();
+  const isWeekend = day === 0 || day === 6;
+
+  const occupancy =
+    ((parking.totalSlots - availableslots) / parking.totalSlots) * 100;
+  const multiplier =
+    occupancy <= 30 ? 0.8 : occupancy <= 60 ? 1 : occupancy <= 80 ? 1.2 : 1.5;
+
+  const isPeak =
+    (fromhour >= 9 && fromhour < 11) || (fromhour >= 17 && fromhour < 20);
+  const peakMultiplier = multiplier + (isPeak ? 0.3 : 0);
+  const finalMultiplier = peakMultiplier + (isWeekend ? 0.2 : 0);
+  const totalPrice = Math.round(
+    (currentPrice.hourly || 0) * durationHours * finalMultiplier,
+  );
+
+  const validate = useCallback(() => {
     const newErrors = {};
     if (!vehicleNumber.trim())
       newErrors.vehicleNumber = "Vehicle number required";
@@ -63,14 +82,21 @@ const BookingCard = ({
       newErrors.duration = "End time must be after start time";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [
+    vehicleNumber,
+    selectedSlot,
+    bookingDate,
+    fromTime,
+    toTime,
+    durationHours,
+  ]);
 
-  const handleconfirm = async () => {
+  const handleconfirm = useCallback(async () => {
     if (!validate()) return;
     try {
       const token = localStorage.getItem("token");
 
-      await axios.get("http://localhost:5000/api/bookings/check/auth", {
+      await axios.get("https://smart-parking-system-backend-oco6.onrender.com/api/bookings/check/auth", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -115,20 +141,26 @@ const BookingCard = ({
       }, 4000);
     } catch (error) {
       if (error.response?.status === 401) {
-        navigate("/login"); 
+        navigate("/login");
       }
     }
-  };
+  }, [
+    validate,
+    selectedSlot,
+    fromTime,
+    toTime,
+    bookingDate,
+    vehicleNumber,
+    totalPrice,
+  ]);
 
   useEffect(() => {
-    const url = "http://localhost:5000/api/parkings/" + parking._id;
-    axios
-      .put(url, { availableSlots: availableslots })
-     
+    const url = "https://smart-parking-system-backend-oco6.onrender.com/api/parkings/" + parking._id;
+    axios.put(url, { availableSlots: availableslots });
   }, [availableslots]);
 
   useEffect(() => {
-    const url = "http://localhost:5000/api/bookings/parking/" + parking._id;
+    const url = "https://smart-parking-system-backend-oco6.onrender.com/api/bookings/parking/" + parking._id;
     axios
       .get(url)
       .then((res) => {
@@ -148,7 +180,7 @@ const BookingCard = ({
       });
   }, []);
 
-  const isSlotBooked = () => {
+  const isSlotBooked = useCallback(() => {
     const slotNumber = parseInt(selectedSlot?.label.replace("C", ""));
 
     if (slotNumber % 2 === 0) {
@@ -170,30 +202,13 @@ const BookingCard = ({
     }
 
     return false;
-  };
+  }, [selectedSlot, bookedSlots, bookingDate, fromTime, toTime]);
 
   useEffect(() => {
     if (selectedSlot && fromTime && toTime) {
       setSlotConflict(isSlotBooked());
     }
   }, [selectedSlot, fromTime, toTime, bookingDate]);
-
-  const fromhour = parseInt(fromTime.split(":")[0]);
-  const day = new Date(bookingDate).getDay();
-  const isWeekend = day === 0 || day === 6;
-
-  const occupancy =
-    ((parking.totalSlots - availableslots) / parking.totalSlots) * 100;
-  const multiplier =
-    occupancy <= 30 ? 0.8 : occupancy <= 60 ? 1 : occupancy <= 80 ? 1.2 : 1.5;
-
-  const isPeak =
-    (fromhour >= 9 && fromhour < 11) || (fromhour >= 17 && fromhour < 20);
-  const peakMultiplier = multiplier + (isPeak ? 0.3 : 0);
-  const finalMultiplier = peakMultiplier + (isWeekend ? 0.2 : 0);
-  const totalPrice = Math.round(
-    (currentPrice.hourly || 0) * durationHours * finalMultiplier,
-  );
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-5 sticky top-[130px]">
@@ -323,7 +338,7 @@ const BookingCard = ({
         </p>
       </div>
 
-<br></br>
+      <br></br>
       <div className="mb-4 p-3 bg-green-50 rounded-xl border">
         <div className="flex justify-between text-xs text-gray-600 mb-1">
           <span>
@@ -403,7 +418,7 @@ const BookingCard = ({
 
       <button
         onClick={handleconfirm}
-        disabled={slotConflict} 
+        disabled={slotConflict}
         className={`w-full font-black py-3.5 rounded-xl text-white ${
           slotConflict
             ? "bg-gray-400 cursor-not-allowed"
