@@ -27,7 +27,7 @@ Multi-role system | Real-time availability | Google OAuth | Razorpay Payments | 
 
 ## 💡 Why I Built This
 
-Living in Dharamsala, I've seen how chaotic parking gets during tourist season — cars circling for 30 minutes, private lots sitting empty right next to overcrowded streets. I built SlotHub to fix exactly that — connecting people who need parking with people who have unused space, with real-time booking and smart time-based slot management so every slot gets maximum utilization throughout the day.
+Living in india, I've seen how chaotic parking gets during tourist season — cars circling for 30 minutes, private lots sitting empty right next to overcrowded streets. I built SlotHub to fix exactly that — connecting people who need parking with people who have unused space, with real-time booking and smart time-based slot management so every slot gets maximum utilization throughout the day.
 
 ---
 
