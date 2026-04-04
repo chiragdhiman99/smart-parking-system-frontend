@@ -32,11 +32,15 @@ Multi-role system | Real-time availability | Google OAuth | Razorpay Payments | 
 
 ---
 
+## 💡 Why I Built This
+
+Living in Dharamsala, I've seen how chaotic parking gets during tourist season — cars circling for 30 minutes, private lots sitting empty right next to overcrowded streets. I built SlotHub to fix exactly that — connecting people who need parking with people who have unused space, with real-time booking and smart time-based slot management so every slot gets maximum utilization throughout the day.
+
+---
+
 ## 🧠 The Real Problem I Solved
 
-Urban parking is broken. People waste 20–30 minutes circling blocks, private parking sits empty, and there's no transparent way to book in advance.
-
-**SlotHub fixes this** — but beyond the obvious, I solved a critical real-world edge case that most parking systems get wrong:
+Beyond the obvious, I solved a critical real-world edge case that most parking systems get wrong:
 
 ### ⚡ Time-Based Slot Conflict Resolution
 
@@ -52,6 +56,56 @@ Slot C1 — April 4, 2026
 ```
 
 This dramatically improves slot utilization — a single parking slot can serve **multiple users per day** instead of being locked for one booking.
+
+---
+
+## 📸 Screenshots
+
+### 🏠 Landing Page
+<!-- Add screenshot: Full landing page hero section -->
+![Landing Page](./screenshots/landing.png)
+
+---
+
+### 🔍 Search & Map View
+<!-- Add screenshot: Search page with map and parking markers -->
+![Search Page](./screenshots/search.png)
+
+---
+
+### 🅿️ Parking Detail
+<!-- Add screenshot: Parking detail page with map, slots, pricing -->
+![Parking Detail](./screenshots/parking-detail.png)
+
+---
+
+### 💳 Payment Page
+<!-- Add screenshot: Razorpay checkout page -->
+![Payment](./screenshots/payment.png)
+
+---
+
+### 📄 Booking Receipt
+<!-- Add screenshot: PDF receipt page with download button -->
+![Booking Receipt](./screenshots/receipt.png)
+
+---
+
+### 👤 Driver Dashboard
+<!-- Add screenshot: Driver dashboard with booking history -->
+![Driver Dashboard](./screenshots/driver-dashboard.png)
+
+---
+
+### 🏢 Owner Dashboard
+<!-- Add screenshot: Owner dashboard with analytics and charts -->
+![Owner Dashboard](./screenshots/owner-dashboard.png)
+
+---
+
+### 🛡️ Admin Dashboard
+<!-- Add screenshot: Admin dashboard with stats, charts, user management -->
+![Admin Dashboard](./screenshots/admin-dashboard.png)
 
 ---
 
@@ -174,7 +228,7 @@ SlotHub Platform
 
 Every route is lazy loaded using `React.lazy()` + `Suspense`. Heavy vendor libraries are split into separate cached chunks using Vite's `manualChunks` config.
 
-Initial page load is ~400KB instead of 2MB+ — users only download what they need, when they need it. Vendor chunks like charts and maps are loaded only when the user navigates to those pages.
+Initial page load is ~400KB instead of 2MB+ — users only download what they need, when they need it. Vendor chunks like charts and maps load only when the user navigates to those pages.
 
 ---
 
@@ -227,19 +281,16 @@ src/
 │   └── booking/
 │       ├── Bookingprocessing.jsx
 │       ├── Bookingsuccess.jsx
-│       └── Bookingreciept.jsx  ← PDF download
+│       └── Bookingreciept.jsx
 │
 ├── dashboard/
-│   ├── driver/
-│   │   └── DriverDashboard.jsx
+│   ├── driver/DriverDashboard.jsx
 │   ├── owner/
 │   │   ├── ownerdashboard.jsx
-│   │   └── components/
-│   │       └── OwnerAnalyticsAndProfile.jsx
+│   │   └── components/OwnerAnalyticsAndProfile.jsx
 │   └── admin/
 │       ├── admindashboard.jsx
-│       └── components/
-│           └── AdminOverview.jsx
+│       └── components/AdminOverview.jsx
 │
 ├── App.jsx         ← All routes with React.lazy + Suspense
 └── main.jsx        ← Entry point
@@ -254,13 +305,6 @@ src/
 | Frontend | Vercel | [smart-parking-system-frontend-kappa.vercel.app](https://smart-parking-system-frontend-kappa.vercel.app) |
 | Backend | Render | [smart-parking-system-backend-oco6.onrender.com](https://smart-parking-system-backend-oco6.onrender.com) |
 | Database | MongoDB Atlas | Cloud hosted |
-
-`vercel.json` configured so React Router works correctly on Vercel:
-```json
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}
-```
 
 ---
 
