@@ -249,8 +249,8 @@ const Login = () => {
                     onChange={handleChange}
                     placeholder={
                       activeTab === "driver"
-                        ? "chirag@gmail.com"
-                        : "vikram@owner.com"
+                        ? "driver@gmail.com"
+                        : "owner@owner.com"
                     }
                     className="flex-1 outline-none text-sm text-gray-800 placeholder-gray-300 bg-transparent font-medium"
                   />
