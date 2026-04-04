@@ -4,6 +4,8 @@
 <img src="https://img.shields.io/badge/Vite-7.3-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
 <img src="https://img.shields.io/badge/TailwindCSS-3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
 <img src="https://img.shields.io/badge/Deployed-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+<img src="https://img.shields.io/badge/Backend-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" />
+<img src="https://img.shields.io/badge/DB-MongoDB_Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
 
 <br/><br/>
 
@@ -18,8 +20,8 @@
 
 ### *Find. Book. Park. Repeat.*
 
-**A full-stack smart parking platform built with React + Node.js**  
-Real-time slot booking | Multi-role dashboards | Google OAuth | Razorpay Payments
+A production-ready, full-stack smart parking platform that solves real urban parking problems.  
+Multi-role system | Real-time availability | Google OAuth | Razorpay Payments | Interactive Maps
 
 <br/>
 
@@ -30,167 +32,177 @@ Real-time slot booking | Multi-role dashboards | Google OAuth | Razorpay Payment
 
 ---
 
-## 📸 Overview
+## 🧠 The Real Problem I Solved
 
-SlotHub is a production-ready smart parking management system that connects **drivers**, **parking owners**, and **admins** through a seamless, role-based platform. Built with a focus on real-world usability, performance optimization, and clean architecture.
+Urban parking is broken. People waste 20–30 minutes circling blocks, private parking sits empty, and there's no transparent way to book in advance.
 
----
+**SlotHub fixes this** — but beyond the obvious, I solved a critical real-world edge case that most parking systems get wrong:
 
-## ✨ Features at a Glance
+### ⚡ Time-Based Slot Conflict Resolution
 
-| Feature | Description |
-|---|---|
-| 🔐 **Auth System** | JWT + Google OAuth 2.0 with role-based access |
-| 🅿️ **Slot Booking** | Real-time parking slot search & booking |
-| 💳 **Payments** | Razorpay payment gateway integration |
-| 🗺️ **Maps** | Interactive maps with Leaflet.js |
-| 📊 **Dashboards** | Separate dashboards for Driver, Owner & Admin |
-| 📄 **PDF Receipts** | Auto-generated booking receipts |
-| 📧 **Email Alerts** | Nodemailer booking confirmation emails |
-| 📱 **Responsive** | Fully mobile-first responsive design |
-| ⚡ **Optimized** | Lazy loading + code splitting for fast loads |
-| 🔒 **Protected Routes** | Role-based route protection |
+> **The Problem:** Parking slot C1 is booked from 10am–12pm. Can someone else book C1 from 1pm–3pm? Most naive systems block the entire slot for the whole day.
 
----
-
-## 🏗️ Architecture & Roles
+**My Solution:** Bookings are validated against **time ranges, not just dates.** A slot can be booked multiple times per day by different users — as long as their time windows don't overlap.
 
 ```
-SlotHub
-├── 👤 Driver
-│   ├── Browse & search parking locations
-│   ├── View slot availability on map
-│   ├── Book slots with Razorpay payment
+Slot C1 — April 4, 2026
+├── Booking 1: 10:00 AM → 12:00 PM  ✅ Confirmed
+├── Booking 2: 01:00 PM → 03:00 PM  ✅ Confirmed (different window)
+└── Booking 3: 11:00 AM → 02:00 PM  ❌ Rejected (overlaps with both)
+```
+
+This dramatically improves slot utilization — a single parking slot can serve **multiple users per day** instead of being locked for one booking.
+
+---
+
+## 🏗️ Three-Role Architecture
+
+```
+SlotHub Platform
+│
+├── 👤 DRIVER
+│   ├── Register / Login (Email + Google OAuth)
+│   ├── Search parking by location
+│   ├── View slots on interactive map (Leaflet.js)
+│   ├── Filter by date, time & vehicle type
+│   ├── View parking details (address, pricing, availability)
+│   ├── Book slot → Razorpay payment
+│   ├── Booking processing & confirmation screen
+│   ├── Booking success page with summary
 │   ├── Download PDF booking receipt
-│   └── View booking history
+│   ├── Receive email confirmation (Nodemailer)
+│   └── View full booking history with status tracking
 │
-├── 🏢 Owner
-│   ├── Register & manage parking locations
-│   ├── Set slot pricing & availability
-│   ├── View bookings & revenue analytics
-│   └── Manage profile
+├── 🏢 OWNER
+│   ├── Register / Login (Email + Google OAuth)
+│   ├── Add & manage parking locations
+│   ├── Set number of slots, pricing & vehicle types
+│   ├── View all bookings for their locations
+│   ├── Revenue analytics with charts
+│   ├── Booking trends visualization (Recharts)
+│   └── Manage profile & account settings
 │
-└── 🛡️ Admin
+└── 🛡️ ADMIN
+    ├── Secure login (separate protected route)
     ├── View all users, owners & bookings
-    ├── Monitor platform revenue
-    ├── Manage parking locations
-    └── View analytics & trends
+    ├── Monitor total platform revenue
+    ├── Manage all parking locations
+    ├── Real-time booking trends (LineChart)
+    ├── Revenue trends (BarChart)
+    ├── Slot status overview (Available / Occupied / Reserved)
+    └── Animated stats with CountUp (bookings, revenue, slots, users)
 ```
+
+---
+
+## ✨ Features
+
+### 🔐 Authentication & Security
+- Email/password signup & login with JWT (7-day expiry)
+- Google OAuth 2.0 via Passport.js — one-click login
+- Role-based access: `driver`, `owner`, `admin`
+- Protected routes — unauthorized users redirected automatically
+- Admin route extra-protected via `ProtectedAdminRoute` component
+- Rate limiting on admin login to prevent brute force attacks
+- Passwords hashed with bcryptjs
+
+### 🅿️ Parking & Booking
+- Search parking locations by area/city
+- Interactive map with Leaflet.js showing parking markers
+- Time-based slot availability — slots bookable multiple times per day
+- Real-time conflict detection on booking
+- Full booking lifecycle: Processing → Success → Receipt
+- Booking status tracking: `pending`, `confirmed`, `active`, `completed`, `cancelled`
+- PDF receipt generation with react-to-pdf
+
+### 💳 Payments
+- Razorpay payment gateway integration
+- Order created on backend, verified on success
+- Payment success triggers booking confirmation
+- Email receipt sent automatically via Nodemailer
+
+### 📊 Dashboards
+- **Driver Dashboard** — booking history, status badges, slot info
+- **Owner Dashboard** — listings management, revenue analytics, booking trends
+- **Admin Dashboard** — platform-wide stats, charts, user & booking management
+
+### 🎨 UI & UX
+- Fully responsive — mobile, tablet & desktop
+- Framer Motion animations throughout
+- React Hot Toast notifications
+- Animated number counters (react-countup) on stats
+- Custom tooltips on Recharts
+- Loading spinners & Suspense fallbacks
+- Clean status badges with color coding per booking state
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-```
-React 18          → UI Framework
-Vite 7.3          → Build Tool & Dev Server
-Tailwind CSS 3    → Utility-First Styling
-Framer Motion     → Animations & Transitions
-React Router v6   → Client-Side Routing
-Axios             → HTTP Client
-Recharts          → Data Visualization
-Leaflet.js        → Interactive Maps
-React-to-PDF      → PDF Receipt Generation
-React Hot Toast   → Notifications
-Lucide React      → Icon Library
-JWT Decode        → Token Parsing
-```
+| Library | Purpose |
+|---|---|
+| React 18 | UI Framework |
+| Vite 7.3 | Build tool & dev server |
+| Tailwind CSS 3 | Utility-first styling |
+| React Router v6 | Client-side routing |
+| Framer Motion | Animations & transitions |
+| Axios | HTTP client |
+| Recharts | Data visualization (Line + Bar charts) |
+| Leaflet.js + React-Leaflet | Interactive maps |
+| react-to-pdf | PDF receipt generation |
+| React Hot Toast | Notifications |
+| Lucide React | Icons |
+| react-countup | Animated number counters |
+| JWT Decode | Token parsing |
 
 ### Backend *(separate repo)*
+| Library | Purpose |
+|---|---|
+| Node.js + Express | Server |
+| MongoDB + Mongoose | Database |
+| Passport.js | Google OAuth 2.0 |
+| Razorpay | Payment gateway |
+| Nodemailer | Email confirmations |
+| bcryptjs | Password hashing |
+| jsonwebtoken | JWT auth |
+| express-rate-limit | Brute force protection |
+
+---
+
+## ⚡ Performance
+
+Every route is lazy loaded using `React.lazy()` + `Suspense`. Heavy vendor libraries are split into separate cached chunks using Vite's `manualChunks` config.
+
+Initial page load is ~400KB instead of 2MB+ — users only download what they need, when they need it. Vendor chunks like charts and maps are loaded only when the user navigates to those pages.
+
+---
+
+## 🔐 Auth Flow
+
 ```
-Node.js + Express → Server
-MongoDB + Mongoose → Database
-Passport.js       → Google OAuth 2.0
-Razorpay          → Payment Gateway
-Nodemailer        → Email Service
-bcryptjs          → Password Hashing
-JSON Web Token    → Authentication
+User → "Continue with Google"
+     → Backend /api/auth/google
+     → Google OAuth consent screen
+     → Backend /api/auth/google/callback
+     → JWT generated (role embedded, 7d expiry)
+     → Redirect to /{role}/dashboard?token=...
+     → Token stored in localStorage
 ```
 
 ---
 
-## ⚡ Performance Optimizations
+## 💳 Payment Flow
 
-This project was heavily optimized for production performance:
-
-### Code Splitting & Lazy Loading
-Every route is **lazy loaded** — initial bundle is ~400KB instead of 2MB+:
-
-```jsx
-// All routes use React.lazy()
-const DriverDashboard = lazy(() => import("./dashboard/driver/DriverDashboard"));
-const OwnerDashboard  = lazy(() => import("./dashboard/owner/ownerdashboard"));
-const AdminDashboard  = lazy(() => import("./dashboard/admin/admindashboard"));
-const Payment         = lazy(() => import("./pages/Payment"));
-const ParkingDetail   = lazy(() => import("./pages/ParkingDetail"));
-// ...and all other routes
 ```
-
-### Manual Chunk Splitting (vite.config.js)
-Heavy vendor libraries are split into separate cached chunks:
-
-```js
-manualChunks: {
-  'react-vendor':     ['react', 'react-dom', 'react-router-dom'],
-  'chart-vendor':     ['recharts'],
-  'map-vendor':       ['leaflet', 'react-leaflet'],
-  'animation-vendor': ['framer-motion'],
-  'pdf-vendor':       ['react-to-pdf', 'jspdf'],
-}
-```
-
-### Build Result
-| Chunk | Size | Loads When |
-|---|---|---|
-| `react-vendor` | 48 kB | Always (cached) |
-| `chart-vendor` | 372 kB | Admin/Owner dashboard only |
-| `map-vendor` | 153 kB | Parking detail page only |
-| `pdf-vendor` | 592 kB | Receipt page only |
-| Initial JS | ~197 kB | First load |
-
-> 💡 **Result**: Users only download what they need, when they need it.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js v18+
-- npm or yarn
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/chiragdhiman99/smart-parking-system-frontend
-cd smart-parking-system-frontend
-
-# Install dependencies
-npm install
-
-# Create environment file
-cp .env.example .env
-```
-
-### Environment Variables
-
-```env
-VITE_GOOGLE_CLIENT_ID=your_google_client_id
-VITE_GOOGLE_MAPS_KEY=your_google_maps_api_key
-```
-
-### Run Locally
-
-```bash
-# Development server
-npm run dev
-
-# Production build
-npm run build
-
-# Preview production build
-npm run preview
+User selects slot + time window
+     → Amount calculated on frontend
+     → Razorpay order created via backend
+     → Razorpay checkout UI opens
+     → Payment success
+     → Booking saved to DB
+     → Email confirmation sent via Nodemailer
+     → PDF receipt available for download
 ```
 
 ---
@@ -200,17 +212,22 @@ npm run preview
 ```
 src/
 ├── pages/
-│   ├── Landing.jsx          # Home page
-│   ├── Search.jsx           # Search parking
-│   ├── ParkingDetail.jsx    # Slot detail + map
-│   ├── Payment.jsx          # Razorpay checkout
-│   ├── Howitworks.jsx       # Info page
-│   ├── Reviewssection.jsx   # Reviews
-│   └── auth/
-│       ├── Login.jsx        # User login
-│       ├── Register.jsx     # User register
-│       ├── adminlogin.jsx   # Admin login
-│       └── protectedadminroute.jsx
+│   ├── Landing.jsx             ← Home page
+│   ├── Search.jsx              ← Search parking by location
+│   ├── ParkingDetail.jsx       ← Slot detail + Leaflet map
+│   ├── Payment.jsx             ← Razorpay checkout
+│   ├── Howitworks.jsx          ← Info page
+│   ├── Reviewssection.jsx      ← User reviews
+│   ├── NotFound.jsx            ← 404 page
+│   ├── auth/
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── adminlogin.jsx
+│   │   └── protectedadminroute.jsx
+│   └── booking/
+│       ├── Bookingprocessing.jsx
+│       ├── Bookingsuccess.jsx
+│       └── Bookingreciept.jsx  ← PDF download
 │
 ├── dashboard/
 │   ├── driver/
@@ -224,106 +241,37 @@ src/
 │       └── components/
 │           └── AdminOverview.jsx
 │
-├── pages/booking/
-│   ├── Bookingprocessing.jsx
-│   ├── Bookingsuccess.jsx
-│   └── Bookingreciept.jsx
-│
-├── App.jsx                  # Routes + Suspense
-└── main.jsx                 # Entry point
-```
-
----
-
-## 🔐 Authentication Flow
-
-```
-User clicks "Continue with Google"
-        ↓
-Frontend → Backend /api/auth/google
-        ↓
-Google OAuth 2.0 consent screen
-        ↓
-Backend /api/auth/google/callback
-        ↓
-JWT token generated (7d expiry)
-        ↓
-Redirect → /{role}/dashboard?token=...
-        ↓
-Token stored in localStorage
-```
-
----
-
-## 💳 Payment Flow
-
-```
-User selects slot & duration
-        ↓
-Amount calculated on frontend
-        ↓
-Razorpay order created via backend
-        ↓
-Razorpay checkout UI opens
-        ↓
-Payment success → Booking confirmed
-        ↓
-Email confirmation sent via Nodemailer
-        ↓
-PDF receipt available for download
+├── App.jsx         ← All routes with React.lazy + Suspense
+└── main.jsx        ← Entry point
 ```
 
 ---
 
 ## 🌐 Deployment
 
-| Service | Platform | URL |
+| Layer | Platform | URL |
 |---|---|---|
 | Frontend | Vercel | [smart-parking-system-frontend-kappa.vercel.app](https://smart-parking-system-frontend-kappa.vercel.app) |
 | Backend | Render | [smart-parking-system-backend-oco6.onrender.com](https://smart-parking-system-backend-oco6.onrender.com) |
 | Database | MongoDB Atlas | Cloud hosted |
 
-### Vercel Config (`vercel.json`)
+`vercel.json` configured so React Router works correctly on Vercel:
 ```json
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
 ```
-> Required for React Router to work on Vercel — all routes serve `index.html`.
 
 ---
 
-## 📊 Key Implementation Highlights
+## 🚀 Run Locally
 
-### Role-Based Routing
-```jsx
-<Route
-  path="/admin/dashboard"
-  element={
-    <ProtectedAdminRoute>
-      <AdminDashboard />
-    </ProtectedAdminRoute>
-  }
-/>
+```bash
+git clone https://github.com/chiragdhiman99/smart-parking-system-frontend
+cd smart-parking-system-frontend
+npm install
+npm run dev
 ```
-
-### Rate Limiting (Backend)
-Admin login is protected with express-rate-limiter to prevent brute force attacks.
-
-### JWT Expiry
-Tokens expire in 7 days — users are automatically logged out after expiry.
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ---
 
@@ -339,6 +287,6 @@ Tokens expire in 7 days — users are automatically logged out after expiry.
 
 **Built with ❤️ from Dharamsala, Himachal Pradesh 🏔️**
 
-⭐ Star this repo if you found it useful!
+⭐ Star this repo if you found it helpful!
 
 </div>
