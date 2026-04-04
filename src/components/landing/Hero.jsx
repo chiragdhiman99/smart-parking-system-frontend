@@ -9,7 +9,7 @@ const Hero = () => {
 
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTag, setActiveTag] = useState("4-Wheeler");
+  const [activeTag, setActiveTag] = useState("all");
   const [loading, setLoading] = useState(false);
   const quickTags = [
     "4-Wheeler",
@@ -112,9 +112,16 @@ const Hero = () => {
 
             <button
               onClick={() => handlefindparking()}
-              className="bg-[#22C55E] cursor-pointer hover:bg-[#16A34A] text-white font-bold text-[9px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-5 py-1.5 sm:py-2.5 md:py-3 rounded-xl transition-colors duration-200 whitespace-nowrap flex-shrink-0"
+              className="bg-[#22C55E] cursor-pointer hover:bg-[#16A34A] text-white font-bold text-[9px] sm:text-xs md:text-sm px-2 sm:px-4 md:px-5 py-1.5 sm:py-2.5 md:py-3 rounded-xl transition-colors duration-200 whitespace-nowrap flex-shrink-0 flex items-center gap-1.5"
             >
-              Find Parking
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-3 w-3 border-t-2 border-b-2 border-white" />
+                  Finding...
+                </>
+              ) : (
+                "Find Parking"
+              )}
             </button>
           </motion.div>
           <motion.div

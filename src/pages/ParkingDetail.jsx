@@ -141,6 +141,7 @@ const ParkingDetail = () => {
               setSelectedSlot={setSelectedSlot}
               bookedSlots={bookedSlots}
               availableslots={availableslots}
+              setSelectedVehicle={setSelectedVehicle}
             />
           </div>
 

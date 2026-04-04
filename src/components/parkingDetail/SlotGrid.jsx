@@ -20,6 +20,7 @@ const SlotGrid = ({
   bookedSlots = [],
   selectedSlot,
   setSelectedSlot,
+  setSelectedVehicle,
 }) => {
   const fourWheelerCount = Number(parking?.fourWheelerSlots) || 0;
   const twoWheelerCount = Number(parking?.twoWheelerSlots) || 0;
@@ -44,13 +45,16 @@ const SlotGrid = ({
   const bikeLeftRows = chunk(bikeLeft, 2);
   const bikeRightRows = chunk(bikeRight, 2);
 
-  const handleSelect = useCallback(
-    (slot) => {
-      if (slot.status !== "available") return;
-      setSelectedSlot(selectedSlot?.id === slot.id ? null : slot);
-    },
-    [selectedSlot, setSelectedSlot],
-  );
+ const handleSelect = useCallback(
+  (slot) => {
+    if (slot.status !== "available") return;
+    setSelectedSlot(selectedSlot?.id === slot.id ? null : slot);
+    
+    if (slot.type === "car") setSelectedVehicle("4-wheeler");
+    if (slot.type === "bike") setSelectedVehicle("2-wheeler");
+  },
+  [selectedSlot, setSelectedSlot, setSelectedVehicle],
+);
 
   const SlotBox = ({ slot, isWide }) => (
     <div

@@ -24,6 +24,7 @@ const BookingCard = ({
   const navigate = useNavigate();
   const [bookedSlots, setBookedSlots] = useState([]);
   const [slotConflict, setSlotConflict] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [vehicleNumber, setVehicleNumber] = useState("");
   if (!parking) {
@@ -52,7 +53,6 @@ const BookingCard = ({
 
   const [errors, setErrors] = useState({});
 
-  // ✅ totalPrice moved here — BEFORE handleconfirm
   const fromhour = parseInt(fromTime.split(":")[0]);
   const day = new Date(bookingDate).getDay();
   const isWeekend = day === 0 || day === 6;
@@ -93,12 +93,16 @@ const BookingCard = ({
 
   const handleconfirm = useCallback(async () => {
     if (!validate()) return;
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("token");
 
-      await axios.get("https://smart-parking-system-backend-oco6.onrender.com/api/bookings/check/auth", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.get(
+        "https://smart-parking-system-backend-oco6.onrender.com/api/bookings/check/auth",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       navigate("/processing/booking", {
         state: { bg: theme },
@@ -140,6 +144,7 @@ const BookingCard = ({
         });
       }, 4000);
     } catch (error) {
+      setIsLoading(false);
       if (error.response?.status === 401) {
         navigate("/login");
       }
@@ -155,12 +160,16 @@ const BookingCard = ({
   ]);
 
   useEffect(() => {
-    const url = "https://smart-parking-system-backend-oco6.onrender.com/api/parkings/" + parking._id;
+    const url =
+      "https://smart-parking-system-backend-oco6.onrender.com/api/parkings/" +
+      parking._id;
     axios.put(url, { availableSlots: availableslots });
   }, [availableslots]);
 
   useEffect(() => {
-    const url = "https://smart-parking-system-backend-oco6.onrender.com/api/bookings/parking/" + parking._id;
+    const url =
+      "https://smart-parking-system-backend-oco6.onrender.com/api/bookings/parking/" +
+      parking._id;
     axios
       .get(url)
       .then((res) => {
@@ -418,14 +427,21 @@ const BookingCard = ({
 
       <button
         onClick={handleconfirm}
-        disabled={slotConflict}
-        className={`w-full font-black py-3.5 rounded-xl text-white ${
-          slotConflict
+        disabled={slotConflict || isLoading}
+        className={`w-full font-black py-3.5 rounded-xl text-white flex items-center justify-center gap-2 ${
+          slotConflict || isLoading
             ? "bg-gray-400 cursor-not-allowed"
             : "bg-[#22C55E] cursor-pointer"
         }`}
       >
-        Confirm Booking →
+        {isLoading ? (
+          <>
+            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white" />
+            Processing...
+          </>
+        ) : (
+          "Confirm Booking →"
+        )}
       </button>
 
       <p className="text-center text-xs text-gray-400 mt-3">

@@ -39,6 +39,7 @@ const ParkingTabs = ({
   setSelectedSlot,
   bookedSlots,
   availableslots,
+  setSelectedVehicle,
 }) => {
  const updatedSlots = parking.slots.map((slot) => {
   if ((bookedSlots ?? []).includes(slot.label)) {
@@ -208,6 +209,7 @@ const ParkingTabs = ({
               bookedSlots={bookedSlots}
               selectedSlot={selectedSlot}
               setSelectedSlot={setSelectedSlot}
+              setSelectedVehicle={setSelectedVehicle}
             />
           </>
         )}
