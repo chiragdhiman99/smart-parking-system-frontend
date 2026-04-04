@@ -24,7 +24,6 @@ Multi-role system | Real-time availability | Google OAuth | Razorpay Payments | 
 </div>
 
 ---
-live demo -> https://smart-parking-system-frontend-kappa.vercel.app/
 
 ## 💡 Why I Built This
 
@@ -32,15 +31,10 @@ Living in Dharamsala, I've seen how chaotic parking gets during tourist season �
 
 ---
 
-## 🧠 The Real Problem I Solved
+## 🧠 Problems I Solved
 
-Beyond the obvious, I solved a critical real-world edge case that most parking systems get wrong:
-
-### ⚡ Time-Based Slot Conflict Resolution
-
-> **The Problem:** Parking slot C1 is booked from 10am–12pm. Can someone else book C1 from 1pm–3pm? Most naive systems block the entire slot for the whole day.
-
-**My Solution:** Bookings are validated against **time ranges, not just dates.** A slot can be booked multiple times per day by different users — as long as their time windows don't overlap.
+### ⏱️ Time-Based Slot Allocation
+Most parking systems block a slot for the entire day after a single booking. SlotHub validates bookings against **time ranges**, not just dates — so a slot can serve multiple users per day as long as their windows don't overlap.
 
 ```
 Slot C1 — April 4, 2026
@@ -49,57 +43,21 @@ Slot C1 — April 4, 2026
 └── Booking 3: 11:00 AM → 02:00 PM  ❌ Rejected (overlaps with both)
 ```
 
-This dramatically improves slot utilization — a single parking slot can serve **multiple users per day** instead of being locked for one booking.
+### 💰 Dynamic Pricing Engine
+Price is not fixed — it adjusts automatically based on real-world demand signals:
 
----
+| Condition | Adjustment |
+|---|---|
+| Occupancy below 30% | −20% Low Demand Discount |
+| Occupancy 60–80% | +20% High Demand Surge |
+| Occupancy above 80% | +50% Peak Demand Surge |
+| Peak hours (9–11 AM, 5–8 PM) | +30% Peak Hours Surge |
+| Weekends (Sat & Sun) | +20% Weekend Surge |
 
-## 📸 Screenshots
+All multipliers stack — final price is calculated in real-time before payment so the driver always sees the exact amount.
 
-### 🏠 Landing Page
-<!-- Add screenshot: Full landing page hero section -->
-![Landing Page](./screenshots/landing.png)
-
----
-
-### 🔍 Search & Map View
-<!-- Add screenshot: Search page with map and parking markers -->
-![Search Page](./screenshots/search.png)
-
----
-
-### 🅿️ Parking Detail
-<!-- Add screenshot: Parking detail page with map, slots, pricing -->
-![Parking Detail](./screenshots/parking-detail.png)
-
----
-
-### 💳 Payment Page
-<!-- Add screenshot: Razorpay checkout page -->
-![Payment](./screenshots/payment.png)
-
----
-
-### 📄 Booking Receipt
-<!-- Add screenshot: PDF receipt page with download button -->
-![Booking Receipt](./screenshots/receipt.png)
-
----
-
-### 👤 Driver Dashboard
-<!-- Add screenshot: Driver dashboard with booking history -->
-![Driver Dashboard](./screenshots/driver-dashboard.png)
-
----
-
-### 🏢 Owner Dashboard
-<!-- Add screenshot: Owner dashboard with analytics and charts -->
-![Owner Dashboard](./screenshots/owner-dashboard.png)
-
----
-
-### 🛡️ Admin Dashboard
-<!-- Add screenshot: Admin dashboard with stats, charts, user management -->
-![Admin Dashboard](./screenshots/admin-dashboard.png)
+### 📅 Date Blocking
+Owners can block specific dates from their dashboard — maintenance days, holidays, or private events. Blocked dates are excluded from the booking calendar instantly, preventing any bookings on those days.
 
 ---
 
@@ -116,7 +74,6 @@ SlotHub Platform
 │   ├── View parking details (address, pricing, availability)
 │   ├── Book slot → Razorpay payment
 │   ├── Booking processing & confirmation screen
-│   ├── Booking success page with summary
 │   ├── Download PDF booking receipt
 │   ├── Receive email confirmation (Nodemailer)
 │   └── View full booking history with status tracking
@@ -124,11 +81,11 @@ SlotHub Platform
 ├── 🏢 OWNER
 │   ├── Register / Login (Email + Google OAuth)
 │   ├── Add & manage parking locations
-│   ├── Set number of slots, pricing & vehicle types
+│   ├── Set slots, pricing & vehicle types
+│   ├── Block unavailable dates
 │   ├── View all bookings for their locations
 │   ├── Revenue analytics with charts
-│   ├── Booking trends visualization (Recharts)
-│   └── Manage profile & account settings
+│   └── Booking trends visualization (Recharts)
 │
 └── 🛡️ ADMIN
     ├── Secure login (separate protected route)
@@ -157,7 +114,9 @@ SlotHub Platform
 ### 🅿️ Parking & Booking
 - Search parking locations by area/city
 - Interactive map with Leaflet.js showing parking markers
-- Time-based slot availability — slots bookable multiple times per day
+- Time-based slot allocation — one slot, multiple bookings per day
+- Dynamic pricing — demand, peak hours & weekend multipliers applied in real-time
+- Date blocking — owners can mark unavailable dates
 - Real-time conflict detection on booking
 - Full booking lifecycle: Processing → Success → Receipt
 - Booking status tracking: `pending`, `confirmed`, `active`, `completed`, `cancelled`
@@ -179,7 +138,6 @@ SlotHub Platform
 - Framer Motion animations throughout
 - React Hot Toast notifications
 - Animated number counters (react-countup) on stats
-- Custom tooltips on Recharts
 - Loading spinners & Suspense fallbacks
 - Clean status badges with color coding per booking state
 
@@ -222,7 +180,7 @@ SlotHub Platform
 
 Every route is lazy loaded using `React.lazy()` + `Suspense`. Heavy vendor libraries are split into separate cached chunks using Vite's `manualChunks` config.
 
-Initial page load is ~400KB instead of 2MB+ — users only download what they need, when they need it. Vendor chunks like charts and maps load only when the user navigates to those pages.
+Initial page load is ~400KB instead of 2MB+ — users only download what they need, when they need it.
 
 ---
 
@@ -244,7 +202,7 @@ User → "Continue with Google"
 
 ```
 User selects slot + time window
-     → Amount calculated on frontend
+     → Amount calculated with dynamic pricing
      → Razorpay order created via backend
      → Razorpay checkout UI opens
      → Payment success
@@ -318,11 +276,3 @@ npm run dev
 **Chirag Dhiman**  
 📧 dhimanchirag99@gmail.com  
 🔗 [GitHub](https://github.com/chiragdhiman99)
-
----
-
-<div align="center">
-
-
-
-</div>
