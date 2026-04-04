@@ -285,7 +285,6 @@ npm run dev
 
 <div align="center">
 
-**Built with ❤️ from Dharamsala, Himachal Pradesh 🏔️**
 
 ⭐ Star this repo if you found it helpful!
 
