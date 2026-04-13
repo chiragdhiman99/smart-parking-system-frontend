@@ -103,7 +103,6 @@ const Search = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-
   useEffect(() => {
     if (query) setSearchQuery(query);
     const matchedCity = cities.find((city) => city.toLowerCase() === query);
@@ -473,12 +472,16 @@ const Search = () => {
                           <span className="text-lg font-black text-[#22C55E]">
                             Rs.{parking.price}/hr
                           </span>
-                        
                         </div>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            navigate(`/parking/${parking._id}`);
+                            navigate(`/parking/${parking._id}`, {
+                              state: {
+                                bg: parking.bg,
+                                distance: parking.distance,
+                              },
+                            });
                           }}
                           className="bg-[#22C55E] cursor-pointer hover:bg-[#16A34A] text-white text-xs font-bold px-4 py-2 rounded-xl transition-colors duration-200"
                         >
@@ -552,7 +555,12 @@ const Search = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            navigate(`/parking/${parking._id}`);
+                            navigate(`/parking/${parking._id}`, {
+                              state: {
+                                bg: parking.bg,
+                                distance: parking.distance,
+                              },
+                            });
                           }}
                           className="bg-[#22C55E] hover:bg-[#16A34A] text-white text-xs sm:text-sm font-bold px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl transition-colors duration-200"
                         >
