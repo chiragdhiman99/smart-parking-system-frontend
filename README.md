@@ -26,6 +26,36 @@ Multi-role system | Real-time availability | Google OAuth | Razorpay Payments | 
 ---
 Live Demo -> https://smart-parking-system-frontend-kappa.vercel.app
 
+## 📸 Screenshots
+
+<div align="center">
+
+### 🏠 Landing Page
+![Landing](https://raw.githubusercontent.com/chiragdhiman99/smart-parking-system-frontend/main/screenshots/landing.png)
+
+### 🔍 Search & Map View
+![Search](https://raw.githubusercontent.com/chiragdhiman99/smart-parking-system-frontend/main/screenshots/search.png)
+
+### 🅿️ Parking Detail
+![Parking Detail](https://raw.githubusercontent.com/chiragdhiman99/smart-parking-system-frontend/main/screenshots/parking-detail.png)
+
+### 💳 Payment Page
+![Payment](https://raw.githubusercontent.com/chiragdhiman99/smart-parking-system-frontend/main/screenshots/payment.png)
+
+### 🧾 Booking Receipt
+![Receipt](https://raw.githubusercontent.com/chiragdhiman99/smart-parking-system-frontend/main/screenshots/receipt.png)
+
+### 👤 Driver Dashboard
+![Driver Dashboard](https://raw.githubusercontent.com/chiragdhiman99/smart-parking-system-frontend/main/screenshots/driver-dashboard.png)
+
+### 🏢 Owner Dashboard
+![Owner Dashboard](https://raw.githubusercontent.com/chiragdhiman99/smart-parking-system-frontend/main/screenshots/owner-dashboard.png)
+
+### 🛡️ Admin Dashboard
+![Admin Dashboard](https://raw.githubusercontent.com/chiragdhiman99/smart-parking-system-frontend/main/screenshots/admin-dashboard.png)
+
+</div>
+
 ## 💡 Why I Built This
 
 Living in india, I've seen how chaotic parking gets during tourist season — cars circling for 30 minutes, private lots sitting empty right next to overcrowded streets. I built SlotHub to fix exactly that — connecting people who need parking with people who have unused space, with real-time booking and smart time-based slot management so every slot gets maximum utilization throughout the day.
@@ -170,7 +200,7 @@ SlotHub Platform
 | MongoDB + Mongoose | Database |
 | Passport.js | Google OAuth 2.0 |
 | Razorpay | Payment gateway |
-| Nodemailer | Email confirmations |
+| Resend | Email confirmations |
 | bcryptjs | Password hashing |
 | jsonwebtoken | JWT auth |
 | express-rate-limit | Brute force protection |
