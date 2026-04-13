@@ -92,7 +92,10 @@ export default function Payment() {
 
   useEffect(() => {
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${userid}`, { userid })
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${userid}`,
+        { userid },
+      )
       .then((res) => {
         setUserinfo(res.data);
       })
@@ -149,44 +152,28 @@ export default function Payment() {
                 userdetails,
               },
             });
-            axios
-              .post("https://smart-parking-system-backend-oco6.onrender.com/confirm-booking", {
-                username: userinfo.fullName,
-                email: userinfo.email,
-                slot: userdetails?.slot?.label,
-                date: userdetails?.date,
-                fromTime: userdetails?.fromTime + " to " + userdetails?.toTime,
-                amount: userdetails?.totalPrice,
-                vehicleNumber: userdetails?.vehicleNumber,
-              })
-              .then((res) => {
-                console.log("Booking confirmation email sent successfully");
-              })
-              .catch((err) => {
-                console.error(
-                  "Failed to send booking confirmation email:",
-                  err,
-                );
-              });
           }
 
           axios
-            .post("https://smart-parking-system-backend-oco6.onrender.com/api/bookings/create/booking", {
-              userName: userinfo.fullName,
-              userEmail: userinfo.email,
-              parkingid: userdetails.parkingid,
-              ownerid: userdetails.ownerId,
-              userPhone: userinfo.phone,
-              slot: userdetails?.slot?.label,
-              vehicleNumber: userdetails?.vehicleNumber,
-              date: userdetails?.date,
-              fromTime: userdetails?.fromTime,
-              toTime: userdetails?.toTime,
-              amount: userdetails?.totalPrice,
-              paymentId: response.razorpay_payment_id,
-              paymentStatus: "success",
-              bookingStatus: "confirmed",
-            })
+            .post(
+              "https://smart-parking-system-backend-oco6.onrender.com/api/bookings/create/booking",
+              {
+                userName: userinfo.fullName,
+                userEmail: userinfo.email,
+                parkingid: userdetails.parkingid,
+                ownerid: userdetails.ownerId,
+                userPhone: userinfo.phone,
+                slot: userdetails?.slot?.label,
+                vehicleNumber: userdetails?.vehicleNumber,
+                date: userdetails?.date,
+                fromTime: userdetails?.fromTime,
+                toTime: userdetails?.toTime,
+                amount: userdetails?.totalPrice,
+                paymentId: response.razorpay_payment_id,
+                paymentStatus: "success",
+                bookingStatus: "confirmed",
+              },
+            )
             .then((res) => {
               console.log("Booking created successfully");
             })

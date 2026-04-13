@@ -25,175 +25,200 @@ const AnalyticsTab = ({
   ownerparking,
   totalearnings,
   revenuegraph,
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 16 }}
-    animate={{ opacity: 1, y: 0 }}
-    className="flex flex-col gap-6"
-  >
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      {[
-        {
-          label: "Total Revenue",
-          value: `₹${totalearnings}`,
-          icon: "💰",
-          color: "bg-green-50 text-green-700",
-        },
-        {
-          label: "This Month",
-          value: `₹${userbookings
-            .filter(
-              (b) => new Date(b.createdAt).getMonth() === new Date().getMonth(),
-            )
-            .reduce((t, b) => t + Number(b.amount.replace("₹", "")), 0)}`,
-          icon: "📅",
-          color: "bg-blue-50 text-blue-700",
-        },
-        {
-          label: "Total Bookings",
-          value: userbookings.length,
-          icon: "📋",
-          color: "bg-purple-50 text-purple-700",
-        },
-        {
-          label: "Avg Occupancy",
-          value: `${
-            ownerparking.length > 0
-              ? Math.round(
-                  (ownerparking.reduce(
-                    (t, p) => t + (p.totalSlots - p.availableSlots),
-                    0,
-                  ) /
-                    ownerparking.reduce((t, p) => t + p.totalSlots, 0)) *
-                    100,
-                )
-              : 0
-          }%`,
-          icon: "📈",
-          color: "bg-yellow-50 text-yellow-700",
-        },
-      ].map((stat, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.08 }}
-          className="bg-white rounded-2xl p-5 border border-gray-100"
-        >
-          <div
-            className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-3 ${stat.color}`}
+}) => {
+  const last6Days = [...revenuegraph]
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 6)
+    .reverse();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col gap-6"
+    >
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          {
+            label: "Total Revenue",
+            value: `₹${totalearnings}`,
+            icon: "💰",
+            color: "bg-green-50 text-green-700",
+          },
+          {
+            label: "This Month",
+            value: `₹${userbookings
+              .filter(
+                (b) =>
+                  new Date(b.createdAt).getMonth() === new Date().getMonth(),
+              )
+              .reduce((t, b) => t + Number(b.amount.replace("₹", "")), 0)}`,
+            icon: "📅",
+            color: "bg-blue-50 text-blue-700",
+          },
+          {
+            label: "Total Bookings",
+            value: userbookings.length,
+            icon: "📋",
+            color: "bg-purple-50 text-purple-700",
+          },
+          {
+            label: "Avg Occupancy",
+            value: `${
+              ownerparking.length > 0
+                ? Math.round(
+                    (ownerparking.reduce(
+                      (t, p) => t + (p.totalSlots - p.availableSlots),
+                      0,
+                    ) /
+                      ownerparking.reduce((t, p) => t + p.totalSlots, 0)) *
+                      100,
+                  )
+                : 0
+            }%`,
+            icon: "📈",
+            color: "bg-yellow-50 text-yellow-700",
+          },
+        ].map((stat, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.08 }}
+            className="bg-white rounded-2xl p-5 border border-gray-100"
           >
-            {stat.icon}
+            <div
+              className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-3 ${stat.color}`}
+            >
+              {stat.icon}
+            </div>
+            <p className="text-2xl font-black text-gray-900">{stat.value}</p>
+            <p className="text-xs text-gray-400 mt-0.5">{stat.label}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="bg-white rounded-2xl p-6 border border-gray-100">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-base font-black text-gray-900">
+              Revenue Overview
+            </h2>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Last 6 days earnings
+            </p>
           </div>
-          <p className="text-2xl font-black text-gray-900">{stat.value}</p>
-          <p className="text-xs text-gray-400 mt-0.5">{stat.label}</p>
-        </motion.div>
-      ))}
-    </div>
-
-    <div className="bg-white rounded-2xl p-6 border border-gray-100">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-base font-black text-gray-900">
-            Revenue Overview
-          </h2>
-          <p className="text-xs text-gray-400 mt-0.5">
-            Daily earnings breakdown
-          </p>
+          <span className="text-xs font-bold bg-blue-50 text-blue-700 px-3 py-1.5 rounded-xl">
+            ₹{totalearnings} Total
+          </span>
         </div>
-        <span className="text-xs font-bold bg-blue-50 text-blue-700 px-3 py-1.5 rounded-xl">
-          ₹{totalearnings} Total
-        </span>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={last6Days} barSize={40}>
+            <XAxis
+              dataKey="date"
+              tick={{ fontSize: 11, fill: "#9CA3AF" }}
+              tickLine={false}
+              tickFormatter={(val) => {
+                const d = new Date(val);
+                return d.toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "short",
+                });
+              }}
+            />
+            <YAxis
+              tick={{ fontSize: 11, fill: "#111827" }}
+              tickLine={false}
+              tickFormatter={(v) => `₹${v}`}
+            />
+            <Tooltip
+              cursor={{ fill: "#F3F4F6" }}
+              contentStyle={{
+                borderRadius: "12px",
+                border: "1px solid #E5E7EB",
+                fontSize: "12px",
+              }}
+              formatter={(value) => [`₹${value}`, "Revenue"]}
+              labelFormatter={(val) => {
+                const d = new Date(val);
+                return d.toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                });
+              }}
+            />
+            <Bar dataKey="amount" fill="#3B82F6" radius={[8, 8, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={revenuegraph} barSize={40}>
-          <XAxis
-            dataKey="date"
-            tick={{ fontSize: 11, fill: "#9CA3AF" }}
-            tickLine={false}
-          />
-          <YAxis
-            tick={{ fontSize: 11, fill: "#111827" }}
-            tickLine={false}
-            tickFormatter={(v) => `₹${v}`}
-          />
-          <Tooltip
-            cursor={{ fill: "#F3F4F6" }}
-            contentStyle={{
-              borderRadius: "12px",
-              border: "1px solid #E5E7EB",
-              fontSize: "12px",
-            }}
-            formatter={(value) => [`₹${value}`, "Revenue"]}
-          />
-          <Bar dataKey="amount" fill="#3B82F6" radius={[8, 8, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
 
-    <div className="bg-white rounded-2xl p-6 border border-gray-100">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-base font-black text-gray-900">
-            City Wise Occupancy
-          </h2>
-          <p className="text-xs text-gray-400 mt-0.5">Occupancy % per city</p>
+      <div className="bg-white rounded-2xl p-6 border border-gray-100">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-base font-black text-gray-900">
+              City Wise Occupancy
+            </h2>
+            <p className="text-xs text-gray-400 mt-0.5">Occupancy % per city</p>
+          </div>
         </div>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={["Delhi", "Noida", "Gurgaon", "Faridabad", "Ghaziabad"].map(
+              (city) => {
+                const cityParkings = ownerparking.filter(
+                  (p) => p.city === city,
+                );
+                const totalSlots = cityParkings.reduce(
+                  (t, p) => t + p.totalSlots,
+                  0,
+                );
+                const occupied = cityParkings.reduce(
+                  (t, p) => t + (p.totalSlots - p.availableSlots),
+                  0,
+                );
+                return {
+                  city,
+                  occupancy:
+                    totalSlots > 0
+                      ? Math.round((occupied / totalSlots) * 100)
+                      : 0,
+                };
+              },
+            )}
+          >
+            <XAxis
+              dataKey="city"
+              tick={{ fontSize: 11, fill: "#9CA3AF" }}
+              tickLine={false}
+            />
+            <YAxis
+              tick={{ fontSize: 11, fill: "#111827" }}
+              tickLine={false}
+              tickFormatter={(v) => `${v}%`}
+              domain={[0, 100]}
+            />
+            <Tooltip
+              formatter={(value) => [`${value}%`, "Occupancy"]}
+              contentStyle={{
+                borderRadius: "12px",
+                border: "1px solid #E5E7EB",
+                fontSize: "12px",
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="occupancy"
+              stroke="#22C55E"
+              strokeWidth={2}
+              dot={{ fill: "#22C55E", r: 5 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart
-          data={["Delhi", "Noida", "Gurgaon", "Faridabad", "Ghaziabad"].map(
-            (city) => {
-              const cityParkings = ownerparking.filter((p) => p.city === city);
-              const totalSlots = cityParkings.reduce(
-                (t, p) => t + p.totalSlots,
-                0,
-              );
-              const occupied = cityParkings.reduce(
-                (t, p) => t + (p.totalSlots - p.availableSlots),
-                0,
-              );
-              return {
-                city,
-                occupancy:
-                  totalSlots > 0
-                    ? Math.round((occupied / totalSlots) * 100)
-                    : 0,
-              };
-            },
-          )}
-        >
-          <XAxis
-            dataKey="city"
-            tick={{ fontSize: 11, fill: "#9CA3AF" }}
-            tickLine={false}
-          />
-          <YAxis
-            tick={{ fontSize: 11, fill: "#111827" }}
-            tickLine={false}
-            tickFormatter={(v) => `${v}%`}
-            domain={[0, 100]}
-          />
-          <Tooltip
-            formatter={(value) => [`${value}%`, "Occupancy"]}
-            contentStyle={{
-              borderRadius: "12px",
-              border: "1px solid #E5E7EB",
-              fontSize: "12px",
-            }}
-          />
-          <Line
-            type="monotone"
-            dataKey="occupancy"
-            stroke="#22C55E"
-            strokeWidth={2}
-            dot={{ fill: "#22C55E", r: 5 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 const ProfileTab = ({
   userData,
