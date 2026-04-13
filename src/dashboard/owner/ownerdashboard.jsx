@@ -48,9 +48,12 @@ const OwnerDashboard = () => {
   useEffect(() => {
     if (!decoded) return;
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => setUserData(res.data))
       .catch(() =>
         toast.error("Failed to fetch user data. Please log in again."),
@@ -60,11 +63,11 @@ const OwnerDashboard = () => {
   useEffect(() => {
     if (!decoded?.userId) return;
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings/owner/${decoded.userId}`)
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/owner/${decoded.userId}`,
+      )
       .then((res) => setOwnerParking(res.data))
-      .catch(() =>
-        toast.error("Failed to fetch your parkings. Please try again."),
-      );
+      .catch(() => setOwnerParking([]));
   }, [decoded?.userId]);
 
   useEffect(() => {
@@ -75,7 +78,9 @@ const OwnerDashboard = () => {
   useEffect(() => {
     if (!decoded?.userId) return;
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/bookings/${decoded.userId}`)
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/bookings/${decoded.userId}`,
+      )
       .then((res) => setUserBookings(res.data))
       .catch(() =>
         toast.error("Failed to fetch your bookings. Please try again."),
@@ -85,7 +90,9 @@ const OwnerDashboard = () => {
   useEffect(() => {
     if (!decoded?.userId) return;
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/${decoded.userId}`)
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications/${decoded.userId}`,
+      )
       .then((res) =>
         setNotifications(res.data.filter((n) => n.role === "owner")),
       )
@@ -96,7 +103,9 @@ const OwnerDashboard = () => {
 
   const markAllRead = useCallback(() => {
     axios
-      .put(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/${decoded.userId}`)
+      .put(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/${decoded.userId}`,
+      )
       .then(() =>
         setNotifications((prev) => prev.map((n) => ({ ...n, isread: true }))),
       )
@@ -183,9 +192,12 @@ const OwnerDashboard = () => {
   const handleDeleteParking = useCallback(
     (parkingId) => {
       axios
-        .delete(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${parkingId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .delete(
+          `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${parkingId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
         .then(() => {
           setOwnerParking((prev) => prev.filter((p) => p._id !== parkingId));
           toast.success("Parking deleted successfully!");
@@ -366,7 +378,7 @@ const OwnerDashboard = () => {
                 className="w-10 h-10 rounded-xl object-cover"
               />
             ) : (
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-sm bg-[#22C55E]">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-sm bg-[#3B82F6]">
                 {getInitials(userData.fullName)}
               </div>
             )}

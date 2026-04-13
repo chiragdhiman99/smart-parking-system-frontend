@@ -220,7 +220,7 @@ const AddParkingForm = ({ onClose, onSubmit, ownerid }) => {
       .post("https://smart-parking-system-backend-oco6.onrender.com/api/parkings", cleanedForm)
       .then((res) => {
         onClose();
-        toast.success("Parking added successfully!");
+        toast.success("Parking request submitted successfully!");
       })
       .catch(() => {
         toast.error("Failed to add parking. Please try again.");
