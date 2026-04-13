@@ -238,7 +238,11 @@ const ParkingsTab = ({
               <p className="text-gray-500">
                 🅿️ Slots:{" "}
                 <span className="font-bold text-gray-900">
-                  {parking.totalSlots}/{parking.totalSlots}
+                  {(parking.fourWheelerSlots || 0) +
+                    (parking.twoWheelerSlots || 0)}
+                  /
+                  {(parking.fourWheelerSlots || 0) +
+                    (parking.twoWheelerSlots || 0)}
                 </span>
               </p>
               <p className="text-gray-500">
