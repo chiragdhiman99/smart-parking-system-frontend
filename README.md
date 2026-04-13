@@ -26,6 +26,29 @@ Multi-role system | Real-time availability | Google OAuth | Razorpay Payments | 
 ---
 Live Demo -> https://smart-parking-system-frontend-kappa.vercel.app
 
+## 🧪 Test Credentials
+
+### 👤 Driver Account
+> 💡 Sign up with your own Gmail — you'll receive actual booking 
+> confirmation emails after payment. Best way to see the full flow!
+
+---
+
+### 🏢 Owner Account
+- **Email:** slothubowner3@gmail.com
+- **Password:** Owner3@123
+
+---
+
+### 🛡️ Admin Dashboard Access
+1. Go to: `https://smart-parking-system-frontend-kappa.vercel.app/`
+2. Add `/admin-dashboard` at the end of the URL and press Enter
+3. You'll land on the Admin Login page
+4. Enter credentials below and you're in!
+
+- **Email:** admin@slothub.com
+- **Password:** A9#kL2@xP7!qZ4$mR8
+
 ## 📸 Screenshots
 
 <div align="center">
