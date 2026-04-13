@@ -42,7 +42,7 @@ Live Demo -> https://smart-parking-system-frontend-kappa.vercel.app
 
 ### 🛡️ Admin Dashboard Access
 1. Go to: `https://smart-parking-system-frontend-kappa.vercel.app/`
-2. Add `/admin-dashboard` at the end of the URL and press Enter
+2. Add `/admin/dashboard` at the end of the URL and press Enter
 3. You'll land on the Admin Login page
 4. Enter credentials below and you're in!
 
