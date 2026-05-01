@@ -12,6 +12,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import {
+  Eye,
+  EyeOff,
+  ClipboardList,
+  Banknote,
+  SquareParking,
+  Users,
+} from "lucide-react";
 
 const statusStyle = {
   active: "bg-green-50 text-green-700 border border-green-200",
@@ -72,26 +80,26 @@ const AdminOverview = ({
     {
       label: "Total Bookings",
       value: bookingdata.length,
-      icon: "📋",
+      icon: ClipboardList,
       color: "bg-blue-50 text-blue-700",
     },
     {
       label: "Total Revenue",
       value: totalRevenue,
-      icon: "💰",
+      icon: Banknote,
       color: "bg-red-50 text-red-600",
       prefix: "₹",
     },
     {
       label: "Total Slots",
       value: totalslots,
-      icon: "🅿️",
+      icon: SquareParking,
       color: "bg-yellow-50 text-yellow-700",
     },
     {
       label: "Total Users",
       value: allUsers.length || 0,
-      icon: "👥",
+      icon: Users,
       color: "bg-purple-50 text-purple-700",
     },
   ];
@@ -112,9 +120,9 @@ const AdminOverview = ({
             className="bg-white rounded-2xl p-5 border border-gray-100"
           >
             <div
-              className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-3 ${stat.color}`}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${stat.color}`}
             >
-              {stat.icon}
+              <stat.icon size={20} />
             </div>
             <p className="text-2xl font-black text-gray-900">
               {typeof stat.value === "number" ? (
@@ -215,8 +223,8 @@ const AdminOverview = ({
               <p className="text-sm font-black text-gray-900">Booking Trends</p>
               <p className="text-xs text-gray-400 mt-0.5">Daily activity</p>
             </div>
-            <span className="text-xs font-bold bg-blue-50 text-blue-600 px-2.5 py-1 rounded-full">
-              📋 Bookings
+            <span className="text-xs font-bold bg-blue-50 text-blue-600 px-2.5 py-1 rounded-full flex items-center gap-1">
+              <ClipboardList size={12} /> Bookings
             </span>
           </div>
           <ResponsiveContainer width="100%" height={180}>
@@ -267,7 +275,10 @@ const AdminOverview = ({
               <p className="text-xs text-gray-400 mt-0.5">Daily earnings</p>
             </div>
             <span className="text-xs font-bold bg-red-50 text-red-500 px-2.5 py-1 rounded-full">
-              💰 Revenue
+              <span className="text-xs font-bold bg-red-50 text-red-500 px-2.5 py-1 rounded-full flex items-center gap-1">
+                <Banknote size={12} /> Revenue
+              </span>{" "}
+              Revenue
             </span>
           </div>
           <ResponsiveContainer width="100%" height={180}>
@@ -303,7 +314,8 @@ const AdminOverview = ({
         onClick={() => setActiveNav("parkings")}
         className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 rounded-2xl text-sm transition-all cursor-pointer"
       >
-        🅿️ Manage Parking location →
+        <SquareParking size={28} className="text-gray-300 mx-auto mb-2" />
+        Manage Parking location →
       </button>
     </motion.div>
   );

@@ -175,7 +175,6 @@ export default function AdminLogin() {
             </form>
 
             <p className="mt-6 text-xs text-gray-400 text-center leading-relaxed flex items-center justify-center gap-1">
-              <ShieldAlert size={13} />
               This page is for authorized admins only. Unauthorized access
               attempts are logged.
             </p>
