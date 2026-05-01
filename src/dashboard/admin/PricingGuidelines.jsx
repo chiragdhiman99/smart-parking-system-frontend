@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
+import { Bike, Car, Lightbulb, CheckCircle2 } from "lucide-react";
 
 const token = localStorage.getItem("adminToken");
 
@@ -13,6 +14,7 @@ const PricingGuidelines = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
   const isFormComplete =
     guidelines["2-wheeler"].hourly.min &&
     guidelines["2-wheeler"].hourly.max &&
@@ -22,11 +24,15 @@ const PricingGuidelines = () => {
     guidelines["4-wheeler"].hourly.max &&
     guidelines["4-wheeler"].daily.min &&
     guidelines["4-wheeler"].daily.max;
+
   useEffect(() => {
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/pricing`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/pricing`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => {
         if (res.data) {
           setGuidelines({
@@ -73,16 +79,20 @@ const PricingGuidelines = () => {
   const handleSave = () => {
     setSaving(true);
     axios
-      .put(`https://smart-parking-system-backend-oco6.onrender.com/api/pricing`, guidelines, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .put(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/pricing`,
+        guidelines,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then(() => {
         setSaving(false);
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
         toast.success("Pricing guidelines saved successfully!");
       })
-      .catch((err) => {
+      .catch(() => {
         setSaving(false);
         toast.error("Failed to save pricing guidelines. Please try again.");
       });
@@ -96,8 +106,8 @@ const PricingGuidelines = () => {
     );
 
   const vehicles = [
-    { key: "2-wheeler", label: "2-Wheeler", icon: "🛵" },
-    { key: "4-wheeler", label: "4-Wheeler", icon: "🚗" },
+    { key: "2-wheeler", label: "2-Wheeler", icon: Bike },
+    { key: "4-wheeler", label: "4-Wheeler", icon: Car },
   ];
 
   return (
@@ -107,7 +117,7 @@ const PricingGuidelines = () => {
       className="flex flex-col gap-6 max-w-2xl"
     >
       <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-5 py-4 flex items-start gap-3">
-        <span className="text-lg">💡</span>
+        <Lightbulb size={18} className="text-yellow-600 flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-bold text-yellow-800">
             Soft Pricing Guidelines
@@ -129,8 +139,8 @@ const PricingGuidelines = () => {
           className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
         >
           <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-lg">
-              {vehicle.icon}
+            <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+              <vehicle.icon size={20} className="text-red-500" />
             </div>
             <p className="text-sm font-black text-gray-900">
               {vehicle.label} Pricing Range
@@ -195,10 +205,11 @@ const PricingGuidelines = () => {
               {guidelines[vehicle.key].hourly.min &&
                 guidelines[vehicle.key].hourly.max && (
                   <div className="mt-2 bg-gray-50 rounded-xl px-3 py-2">
-                    <p className="text-xs text-gray-500">
-                      Owner will see:{" "}
-                      <span className="font-bold text-gray-700">
-                        💡 Recommended hourly: ₹
+                    <p className="text-xs text-gray-500 flex items-center gap-1 flex-wrap">
+                      Owner will see:
+                      <span className="font-bold text-gray-700 flex items-center gap-1">
+                        <Lightbulb size={12} className="text-yellow-500" />
+                        Recommended hourly: ₹
                         {guidelines[vehicle.key].hourly.min} - ₹
                         {guidelines[vehicle.key].hourly.max}
                       </span>
@@ -266,12 +277,14 @@ const PricingGuidelines = () => {
               {guidelines[vehicle.key].daily.min &&
                 guidelines[vehicle.key].daily.max && (
                   <div className="mt-2 bg-gray-50 rounded-xl px-3 py-2">
-                    <p className="text-xs text-gray-500">
-                      Owner will see:{" "}
-                      <span className="font-bold text-gray-700">
-                        💡 Recommended daily: ₹
-                        {guidelines[vehicle.key].daily.min} - ₹
-                        {guidelines[vehicle.key].daily.max}
+                    <p className="text-xs text-gray-500 flex items-center gap-1 flex-wrap">
+                      Owner will see:
+                      <span className="font-bold text-gray-700 flex items-center gap-1">
+                        <Lightbulb size={12} className="text-yellow-500" />
+                        Recommended daily: ₹{
+                          guidelines[vehicle.key].daily.min
+                        }{" "}
+                        - ₹{guidelines[vehicle.key].daily.max}
                       </span>
                     </p>
                   </div>
@@ -283,20 +296,24 @@ const PricingGuidelines = () => {
 
       <button
         onClick={handleSave}
-        disabled={saving || !isFormComplete} 
+        disabled={saving || !isFormComplete}
         className={`w-full py-3.5 rounded-2xl text-sm font-bold transition-all duration-200 ${
           !isFormComplete
-            ? "bg-gray-200 text-gray-400 cursor-not-allowed" 
+            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
             : saved
               ? "bg-green-500 text-white cursor-pointer"
               : "bg-[#ef4444] hover:bg-red-600 text-white shadow-md shadow-red-200 cursor-pointer"
         } active:scale-95`}
       >
-        {saving
-          ? "Saving..."
-          : saved
-            ? "✅ Saved Successfully!"
-            : "Save Guidelines"}
+        {saving ? (
+          "Saving..."
+        ) : saved ? (
+          <span className="flex items-center justify-center gap-2">
+            <CheckCircle2 size={16} /> Saved Successfully!
+          </span>
+        ) : (
+          "Save Guidelines"
+        )}
       </button>
     </motion.div>
   );

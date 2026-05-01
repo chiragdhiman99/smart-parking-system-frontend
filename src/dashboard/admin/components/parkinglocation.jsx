@@ -1,8 +1,18 @@
-import { useEffect, useState,useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import { EditModal, DeleteModal } from "./ParkingModals";
+import {
+  MapPin,
+  SquareParking,
+  CheckCircle2,
+  Clock,
+  User,
+  Pencil,
+  Trash2,
+  XCircle,
+} from "lucide-react";
 
 const token = localStorage.getItem("adminToken");
 
@@ -22,9 +32,12 @@ const ManageParkingLocations = () => {
 
   useEffect(() => {
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => {
         setParkings(res.data);
         setLoading(false);
@@ -70,9 +83,12 @@ const ManageParkingLocations = () => {
 
   const handleDelete = (parkingId) => {
     axios
-      .delete(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${parkingId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .delete(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${parkingId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then(() => {
         setParkings((prev) => prev.filter((p) => p._id !== parkingId));
         toast.success("Parking deleted successfully!");
@@ -86,7 +102,6 @@ const ManageParkingLocations = () => {
     );
   }, [parkings, filter]);
 
-
   const totalSlots = useMemo(() => {
     return parkings.reduce(
       (acc, p) =>
@@ -94,7 +109,6 @@ const ManageParkingLocations = () => {
       0,
     );
   }, [parkings]);
-
 
   const approvedCount = useMemo(() => {
     return parkings.filter((p) => p.status === "approved").length;
@@ -121,25 +135,25 @@ const ManageParkingLocations = () => {
           {
             label: "Total Locations",
             value: parkings.length,
-            icon: "📍",
+            icon: MapPin,
             color: "bg-blue-50 text-blue-700",
           },
           {
             label: "Total Slots",
             value: totalSlots,
-            icon: "🅿️",
+            icon: SquareParking,
             color: "bg-yellow-50 text-yellow-700",
           },
           {
             label: "Approved",
             value: approvedCount,
-            icon: "✅",
+            icon: CheckCircle2,
             color: "bg-green-50 text-green-700",
           },
           {
             label: "Pending Approval",
             value: pendingCount,
-            icon: "⏳",
+            icon: Clock,
             color: "bg-red-50 text-red-600",
           },
         ].map((stat, i) => (
@@ -151,9 +165,9 @@ const ManageParkingLocations = () => {
             className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100"
           >
             <div
-              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-base sm:text-lg mb-2 sm:mb-3 ${stat.color}`}
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center mb-2 sm:mb-3 ${stat.color}`}
             >
-              {stat.icon}
+              <stat.icon size={18} />
             </div>
             <p className="text-xl sm:text-2xl font-black text-gray-900">
               {stat.value}
@@ -183,7 +197,7 @@ const ManageParkingLocations = () => {
 
       {filtered.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center">
-          <p className="text-3xl mb-3">📍</p>
+          <MapPin size={36} className="text-gray-300 mx-auto mb-3" />
           <p className="text-sm font-bold text-gray-500">
             No parking locations found
           </p>
@@ -225,28 +239,39 @@ const ManageParkingLocations = () => {
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${statusStyle[parking.status] || "bg-gray-100 text-gray-500 border border-gray-200"}`}
                       >
-                        {parking.status === "approved"
-                          ? "✅ Approved"
-                          : parking.status === "rejected"
-                            ? "❌ Rejected"
-                            : "⏳ Pending"}
+                        {parking.status === "approved" ? (
+                          <span className="flex items-center gap-1">
+                            <CheckCircle2 size={11} /> Approved
+                          </span>
+                        ) : parking.status === "rejected" ? (
+                          <span className="flex items-center gap-1">
+                            <XCircle size={11} /> Rejected
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1">
+                            <Clock size={11} /> Pending
+                          </span>
+                        )}
                       </span>
                     </div>
                     <p className="text-xs text-gray-400 truncate">
                       {parking.address}
                     </p>
                     <p className="text-xs text-gray-400 mt-0.5">
-                      👤 {parking.ownerName || parking.owner || "Owner"}
+                      <p className="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
+                        <User size={11} />{" "}
+                        {parking.ownerName || parking.owner || "Owner"}
+                      </p>{" "}
                     </p>
                   </div>
 
                   {parking.status === "approved" && (
                     <div className="hidden sm:flex gap-2 flex-shrink-0">
                       <button
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:bg-gray-50 transition cursor-pointer flex items-center gap-1.5"
                         onClick={() => setEditModal(parking)}
-                        className="px-3 py-1.5 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:bg-gray-50 transition cursor-pointer"
                       >
-                        ✏️ Edit
+                        <Pencil size={12} /> Edit
                       </button>
                       <button
                         onClick={() => setDeleteModal(parking)}
@@ -277,16 +302,16 @@ const ManageParkingLocations = () => {
                 {parking.status === "approved" && (
                   <div className="flex sm:hidden gap-2 px-4 pb-3">
                     <button
+                      className="flex-1 py-2 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:bg-gray-50 transition cursor-pointer flex items-center justify-center gap-1.5"
                       onClick={() => setEditModal(parking)}
-                      className="flex-1 py-2 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:bg-gray-50 transition cursor-pointer"
                     >
-                      ✏️ Edit
+                      <Pencil size={12} /> Edit
                     </button>
                     <button
+                      className="flex-1 py-2 rounded-xl text-xs font-bold border border-red-200 text-red-500 bg-red-50 hover:bg-red-500 hover:text-white transition cursor-pointer flex items-center justify-center gap-1.5"
                       onClick={() => setDeleteModal(parking)}
-                      className="flex-1 py-2 rounded-xl text-xs font-bold border border-red-200 text-red-500 bg-red-50 hover:bg-red-500 hover:text-white transition cursor-pointer"
                     >
-                      🗑️ Delete
+                      <Trash2 size={12} /> Delete
                     </button>
                   </div>
                 )}
@@ -355,7 +380,7 @@ const ManageParkingLocations = () => {
                       }
                       className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-200 hover:bg-green-500 hover:text-white transition-all duration-200 cursor-pointer"
                     >
-                      ✅ Approve
+                      <CheckCircle2 size={14} /> Approve
                     </button>
                     <button
                       onClick={() =>
@@ -363,7 +388,7 @@ const ManageParkingLocations = () => {
                       }
                       className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-red-50 text-red-500 border border-red-200 hover:bg-red-500 hover:text-white transition-all duration-200 cursor-pointer"
                     >
-                      ❌ Reject
+                      <XCircle size={14} /> Reject
                     </button>
                   </div>
                 )}
@@ -376,7 +401,7 @@ const ManageParkingLocations = () => {
                       }
                       className="w-full py-2.5 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-200 hover:bg-green-500 hover:text-white transition-all duration-200 cursor-pointer"
                     >
-                      ✅ Approve Now
+                      <CheckCircle2 size={14} /> Approve
                     </button>
                   </div>
                 )}
