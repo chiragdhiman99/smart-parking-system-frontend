@@ -1,4 +1,17 @@
 import { motion } from "framer-motion";
+import {
+  X,
+  Car,
+  Bike,
+  ParkingSquare,
+  Video,
+  Shield,
+  Zap,
+  Home,
+  Accessibility,
+  Sparkles,
+  Ban,
+} from "lucide-react";
 
 const EditParkingModal = ({
   editingParking,
@@ -25,7 +38,7 @@ const EditParkingModal = ({
             onClick={() => setEditingParking(null)}
             className="w-8 h-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 cursor-pointer"
           >
-            ✕
+            <X className="w-4 h-4" />
           </button>
         </div>
 
@@ -86,8 +99,8 @@ const EditParkingModal = ({
           </div>
 
           <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
-            <p className="text-sm font-black text-gray-900 mb-3">
-              🚗 4-Wheeler Pricing
+            <p className="text-sm font-black text-gray-900 mb-3 flex items-center gap-2">
+              <Car className="w-4 h-4" /> 4-Wheeler Pricing
             </p>
             <div className="grid grid-cols-2 gap-3">
               {[
@@ -115,8 +128,8 @@ const EditParkingModal = ({
           </div>
 
           <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
-            <p className="text-sm font-black text-gray-900 mb-3">
-              🏍️ 2-Wheeler Pricing
+            <p className="text-sm font-black text-gray-900 mb-3 flex items-center gap-2">
+              <Bike className="w-4 h-4" /> 2-Wheeler Pricing
             </p>
             <div className="grid grid-cols-2 gap-3">
               {[
@@ -144,8 +157,8 @@ const EditParkingModal = ({
           </div>
 
           <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
-            <p className="text-sm font-black text-gray-900 mb-3">
-              🅿️ Slot Count
+            <p className="text-sm font-black text-gray-900 mb-3 flex items-center gap-2">
+              <ParkingSquare className="w-4 h-4" /> Slot Count
             </p>
             <div className="grid grid-cols-2 gap-3">
               {[
@@ -178,12 +191,36 @@ const EditParkingModal = ({
             </label>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { key: "cctv", label: "CCTV", icon: "📹" },
-                { key: "security", label: "24hr Security", icon: "💂" },
-                { key: "evCharging", label: "EV Charging", icon: "⚡" },
-                { key: "covered", label: "Covered", icon: "🏠" },
-                { key: "wheelchair", label: "Wheelchair", icon: "♿" },
-                { key: "carWash", label: "Car Wash", icon: "🚿" },
+                {
+                  key: "cctv",
+                  label: "CCTV",
+                  icon: <Video className="w-4 h-4" />,
+                },
+                {
+                  key: "security",
+                  label: "24hr Security",
+                  icon: <Shield className="w-4 h-4" />,
+                },
+                {
+                  key: "evCharging",
+                  label: "EV Charging",
+                  icon: <Zap className="w-4 h-4" />,
+                },
+                {
+                  key: "covered",
+                  label: "Covered",
+                  icon: <Home className="w-4 h-4" />,
+                },
+                {
+                  key: "wheelchair",
+                  label: "Wheelchair",
+                  icon: <Accessibility className="w-4 h-4" />,
+                },
+                {
+                  key: "carWash",
+                  label: "Car Wash",
+                  icon: <Sparkles className="w-4 h-4" />,
+                },
               ].map((amenity) => (
                 <button
                   key={amenity.key}
@@ -303,7 +340,7 @@ const EditParkingModal = ({
                     key={date}
                     className="flex items-center gap-1 bg-red-50 text-red-500 text-xs font-bold px-3 py-1.5 rounded-xl"
                   >
-                    🚫 {date}
+                    <Ban className="w-3 h-3" /> {date}
                     <button
                       onClick={() =>
                         setEditForm({
@@ -315,7 +352,7 @@ const EditParkingModal = ({
                       }
                       className="ml-1 cursor-pointer"
                     >
-                      ✕
+                      <X className="w-3 h-3" />
                     </button>
                   </div>
                 ))}

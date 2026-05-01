@@ -9,6 +9,13 @@ import {
   Line,
   ResponsiveContainer,
 } from "recharts";
+import {
+  Wallet,
+  CalendarDays,
+  ClipboardList,
+  TrendingUp,
+  Building2,
+} from "lucide-react";
 
 const getInitials = (name) => {
   if (!name) return "U";
@@ -42,7 +49,7 @@ const AnalyticsTab = ({
           {
             label: "Total Revenue",
             value: `₹${totalearnings}`,
-            icon: "💰",
+            icon: <Wallet className="w-5 h-5" />,
             color: "bg-green-50 text-green-700",
           },
           {
@@ -53,13 +60,13 @@ const AnalyticsTab = ({
                   new Date(b.createdAt).getMonth() === new Date().getMonth(),
               )
               .reduce((t, b) => t + Number(b.amount.replace("₹", "")), 0)}`,
-            icon: "📅",
+            icon: <CalendarDays className="w-5 h-5" />,
             color: "bg-blue-50 text-blue-700",
           },
           {
             label: "Total Bookings",
             value: userbookings.length,
-            icon: "📋",
+            icon: <ClipboardList className="w-5 h-5" />,
             color: "bg-purple-50 text-purple-700",
           },
           {
@@ -76,7 +83,7 @@ const AnalyticsTab = ({
                   )
                 : 0
             }%`,
-            icon: "📈",
+            icon: <TrendingUp className="w-5 h-5" />,
             color: "bg-yellow-50 text-yellow-700",
           },
         ].map((stat, i) => (
@@ -104,9 +111,7 @@ const AnalyticsTab = ({
             <h2 className="text-base font-black text-gray-900">
               Revenue Overview
             </h2>
-            <p className="text-xs text-gray-400 mt-0.5">
-              Last 6 days earnings
-            </p>
+            <p className="text-xs text-gray-400 mt-0.5">Last 6 days earnings</p>
           </div>
           <span className="text-xs font-bold bg-blue-50 text-blue-700 px-3 py-1.5 rounded-xl">
             ₹{totalearnings} Total

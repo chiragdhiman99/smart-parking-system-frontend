@@ -1,11 +1,33 @@
 import { useNavigate } from "react-router-dom";
+import {
+  Home,
+  ParkingSquare,
+  ClipboardList,
+  BarChart2,
+  User,
+  Building2,
+  Plus,
+  LogOut,
+} from "lucide-react";
 
 const navItems = [
-  { id: "overview", label: "Overview", icon: "🏠" },
-  { id: "parkings", label: "My Parkings", icon: "🅿️" },
-  { id: "bookings", label: "Bookings", icon: "📋" },
-  { id: "analytics", label: "Analytics", icon: "📊" },
-  { id: "profile", label: "Profile", icon: "👤" },
+  { id: "overview", label: "Overview", icon: <Home className="w-4 h-4" /> },
+  {
+    id: "parkings",
+    label: "My Parkings",
+    icon: <ParkingSquare className="w-4 h-4" />,
+  },
+  {
+    id: "bookings",
+    label: "Bookings",
+    icon: <ClipboardList className="w-4 h-4" />,
+  },
+  {
+    id: "analytics",
+    label: "Analytics",
+    icon: <BarChart2 className="w-4 h-4" />,
+  },
+  { id: "profile", label: "Profile", icon: <User className="w-4 h-4" /> },
 ];
 
 const getInitials = (name) => {
@@ -69,8 +91,8 @@ const OwnerSidebar = ({
               <p className="text-sm font-bold text-gray-900">
                 {userData.fullName}
               </p>
-              <span className="text-[10px] font-semibold bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">
-                🏢 Owner
+              <span className="text-[10px] font-semibold bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full flex items-center gap-1 w-fit">
+                <Building2 className="w-3 h-3" /> Owner
               </span>
             </div>
           </div>
@@ -99,9 +121,9 @@ const OwnerSidebar = ({
         <div className="p-4 border-t border-gray-100">
           <button
             onClick={() => setActiveNav("parkings")}
-            className="w-full bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-3 rounded-xl text-sm transition-all cursor-pointer"
+            className="w-full bg-[#3B82F6] hover:bg-blue-600 text-white font-bold py-3 rounded-xl text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
           >
-            + Add Parking
+            <Plus className="w-4 h-4" /> Add Parking
           </button>
         </div>
 
@@ -111,9 +133,9 @@ const OwnerSidebar = ({
               localStorage.removeItem("token");
               navigate("/login");
             }}
-            className="w-full text-red-500 hover:bg-red-50 font-semibold py-2.5 rounded-xl text-sm transition-all cursor-pointer"
+            className="w-full text-red-500 hover:bg-red-50 font-semibold py-2.5 rounded-xl text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
           >
-            Logout →
+            <LogOut className="w-4 h-4" /> Logout
           </button>
         </div>
       </aside>

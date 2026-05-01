@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { Menu, Bell, BellDot } from "lucide-react";
 import toast from "react-hot-toast";
 import { useCallback } from "react";
 import { lazy, Suspense } from "react";
@@ -287,7 +288,7 @@ const OwnerDashboard = () => {
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden text-gray-500 cursor-pointer"
             >
-              ☰
+              <Menu className="w-5 h-5" />
             </button>
             <div>
               <h1 className="text-lg font-black text-gray-900">
@@ -304,9 +305,11 @@ const OwnerDashboard = () => {
               onClick={() => setNotifOpen(!notifOpen)}
               className="relative p-2 text-gray-400 hover:text-orange-500 transition-all duration-200 cursor-pointer group"
             >
-              <span className="text-xl group-hover:scale-110 inline-block transition-transform duration-200">
-                🔔
-              </span>
+              {notifications.filter((n) => !n.isread).length > 0 ? (
+                <BellDot className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+              ) : (
+                <Bell className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+              )}
               {notifications.filter((n) => !n.isread).length > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                   {notifications.filter((n) => !n.isread).length}
