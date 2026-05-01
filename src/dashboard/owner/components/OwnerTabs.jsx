@@ -186,7 +186,8 @@ const OverviewTab = ({
               onClick={() => setActiveNav("bookings")}
               className="text-blue-600 text-sm font-semibold text-center py-2 flex items-center justify-center gap-1"
             >
-              View all {userbookings.length} bookings <ChevronRight className="w-4 h-4" />
+              View all {userbookings.length} bookings{" "}
+              <ChevronRight className="w-4 h-4" />
             </button>
           )}
         </div>
@@ -227,9 +228,7 @@ const ParkingsTab = ({
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-blue-600" />
-                </div>
+                <span className="text-3xl">{parking.icon}</span>
                 <div>
                   <h3 className="text-lg font-black text-gray-900">
                     {parking.name}
@@ -249,11 +248,17 @@ const ParkingsTab = ({
                 }`}
               >
                 {parking.status === "approved" ? (
-                  <><CheckSquare className="w-3 h-3" /> Approved</>
+                  <>
+                    <CheckSquare className="w-3 h-3" /> Approved
+                  </>
                 ) : parking.status === "rejected" ? (
-                  <><X className="w-3 h-3" /> Rejected</>
+                  <>
+                    <X className="w-3 h-3" /> Rejected
+                  </>
                 ) : (
-                  <><Clock className="w-3 h-3" /> Pending</>
+                  <>
+                    <Clock className="w-3 h-3" /> Pending
+                  </>
                 )}
               </span>
             </div>
