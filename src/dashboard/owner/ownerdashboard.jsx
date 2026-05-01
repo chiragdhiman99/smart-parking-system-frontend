@@ -220,10 +220,13 @@ const OwnerDashboard = () => {
   const totalslots = useMemo(() => {
     return ownerparking.reduce(
       (total, p) =>
-        total + (p.fourWheelerSlots || 0) + (p.twoWheelerSlots || 0),
+        total +
+        (Number(p.fourWheelerSlots) || 0) +
+        (Number(p.twoWheelerSlots) || 0),
       0,
     );
   }, [ownerparking]);
+
   const filteredBookings = useMemo(() => {
     return bookingFilter === "All"
       ? userbookings

@@ -71,7 +71,7 @@ const OverviewTab = ({
         },
         {
           label: "Active Slots",
-          value: totalslots,
+          value: parseInt(totalslots) || 0,
           icon: <CheckSquare className="w-5 h-5" />,
           color: "bg-yellow-50 text-yellow-700",
         },
