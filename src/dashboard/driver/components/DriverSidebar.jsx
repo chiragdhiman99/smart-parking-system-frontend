@@ -104,7 +104,7 @@ const DriverSidebar = ({
         <div className="p-4 border-t border-gray-100">
           <button
             onClick={() => navigate("/search")}
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 rounded-xl text-sm transition-all cursor-pointer"
+            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 rounded-xl text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
           >
             <Search className="w-4 h-4" /> Find Parking
           </button>
@@ -116,7 +116,7 @@ const DriverSidebar = ({
               localStorage.removeItem("token");
               navigate("/login");
             }}
-            className="w-full text-red-500 hover:bg-red-50 font-semibold py-2.5 rounded-xl text-sm transition-all cursor-pointer"
+            className="w-full text-red-500 hover:bg-red-50 font-semibold py-2.5 rounded-xl text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
           >
             <LogOut className="w-4 h-4" /> Logout
           </button>
