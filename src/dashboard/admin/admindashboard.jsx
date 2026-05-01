@@ -2,8 +2,21 @@ import { Suspense, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { jwtDecode } from "jwt-decode";
-import { lazy } from 'react';
+import { lazy } from "react";
 import axios from "axios";
+import {
+  Home,
+  ClipboardList,
+  Building2,
+  MapPin,
+  Users,
+  Wallet,
+  Settings,
+  Menu,
+  Bell,
+  BellDot,
+  LogOut,
+} from "lucide-react";
 import toast from "react-hot-toast";
 const AdminOverview = lazy(() => import("./components/adminOverview"));
 import AdminSections from "./components/adminSection";
@@ -11,13 +24,25 @@ import ManageParkingLocations from "./components/parkinglocation";
 import PricingGuidelines from "./PricingGuidelines";
 
 export const navItems = [
-  { id: "overview", label: "Overview", icon: "🏠" },
-  { id: "bookings", label: "Bookings", icon: "📋" },
-  { id: "owners", label: "Owners", icon: "🏢" },
-  { id: "parkings", label: "Parking Locations", icon: "📍" },
-  { id: "users", label: "Users", icon: "👥" },
-  { id: "pricing", label: "Pricing Guidelines", icon: "💰" },
-  { id: "settings", label: "Settings", icon: "⚙️" },
+  { id: "overview", label: "Overview", icon: <Home className="w-4 h-4" /> },
+  {
+    id: "bookings",
+    label: "Bookings",
+    icon: <ClipboardList className="w-4 h-4" />,
+  },
+  { id: "owners", label: "Owners", icon: <Building2 className="w-4 h-4" /> },
+  {
+    id: "parkings",
+    label: "Parking Locations",
+    icon: <MapPin className="w-4 h-4" />,
+  },
+  { id: "users", label: "Users", icon: <Users className="w-4 h-4" /> },
+  {
+    id: "pricing",
+    label: "Pricing Guidelines",
+    icon: <Wallet className="w-4 h-4" />,
+  },
+  { id: "settings", label: "Settings", icon: <Settings className="w-4 h-4" /> },
 ];
 
 export const getInitials = (name) => {
@@ -63,9 +88,12 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/admin/user/${decoded?.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/admin/user/${decoded?.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => setUserData(res.data))
       .catch(() => toast.error("Failed to load user data."));
   }, []);
@@ -76,7 +104,9 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/bookings/get/bookingsss`)
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/bookings/get/bookingsss`,
+      )
       .then((res) => {
         const occupied = res.data.filter(
           (b) => b.bookingStatus === "confirmed",
@@ -110,9 +140,12 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/parkings`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => {
         setParkingData(res.data);
         const total = res.data.reduce(
@@ -129,16 +162,21 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/auth/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/users`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => setAllUsers(res.data))
       .catch(() => toast.error("Failed to load users."));
   }, []);
 
   useEffect(() => {
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications`)
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications`,
+      )
       .then((res) => {
         const filtered = res.data
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -150,7 +188,9 @@ const AdminDashboard = () => {
 
   const markAllRead = () => {
     axios
-      .put(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/role/admin`)
+      .put(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/role/admin`,
+      )
       .then(() =>
         setNotifications((prev) => prev.map((n) => ({ ...n, isread: true }))),
       )
@@ -232,9 +272,9 @@ const AdminDashboard = () => {
               localStorage.removeItem("token");
               navigate("/login");
             }}
-            className="w-full text-red-500 hover:bg-red-50 font-semibold py-2.5 rounded-xl text-sm transition-all cursor-pointer"
+            className="w-full text-red-500 hover:bg-red-50 font-semibold py-2.5 rounded-xl text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
           >
-            Logout →
+            <LogOut className="w-4 h-4" /> Logout
           </button>
         </div>
       </aside>
@@ -253,7 +293,7 @@ const AdminDashboard = () => {
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden text-gray-500 cursor-pointer"
             >
-              ☰
+              <Menu className="w-5 h-5" />
             </button>
             <div>
               <h1 className="text-lg font-black text-gray-900">
@@ -268,9 +308,11 @@ const AdminDashboard = () => {
               onClick={() => setNotifOpen(!notifOpen)}
               className="relative p-2 text-gray-400 hover:text-red-500 transition-all duration-200 cursor-pointer group"
             >
-              <span className="text-xl group-hover:scale-110 inline-block transition-transform duration-200">
-                🔔
-              </span>
+              {notifications.filter((n) => !n.isread).length > 0 ? (
+                <BellDot className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+              ) : (
+                <Bell className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+              )}
               {notifications.filter((n) => !n.isread).length > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                   {notifications.filter((n) => !n.isread).length}
@@ -347,15 +389,15 @@ const AdminDashboard = () => {
         <div className="p-6 max-w-6xl mx-auto">
           {activeNav === "overview" && (
             <Suspense fallback={<div>Loading...</div>}>
-            <AdminOverview
-              bookingdata={bookingdata}
-              parkingData={parkingData}
-              allUsers={allUsers}
-              totalslots={totalslots}
-              occupiedslots={occupiedslots}
-              linedata={linedata}
-              setActiveNav={setActiveNav}
-            />
+              <AdminOverview
+                bookingdata={bookingdata}
+                parkingData={parkingData}
+                allUsers={allUsers}
+                totalslots={totalslots}
+                occupiedslots={occupiedslots}
+                linedata={linedata}
+                setActiveNav={setActiveNav}
+              />
             </Suspense>
           )}
           {(activeNav === "bookings" ||
