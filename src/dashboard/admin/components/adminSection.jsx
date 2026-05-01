@@ -2,6 +2,22 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {
+  ClipboardList,
+  Building2,
+  SquareParking,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  Search,
+  X,
+  Users,
+  Car,
+  Home,
+  ShieldCheck,
+  Ban,
+  Check,
+} from "lucide-react";
 
 const statusStyle = {
   active: "bg-green-50 text-green-700 border border-green-200",
@@ -161,7 +177,7 @@ const AdminSections = ({
 
           {filteredBookings.length === 0 ? (
             <div className="text-center py-16 text-gray-400">
-              <p className="text-4xl mb-3">📋</p>
+              <ClipboardList size={40} className="text-gray-300 mx-auto mb-3" />
               <p className="text-sm font-bold text-gray-500">
                 No bookings found
               </p>
@@ -207,11 +223,15 @@ const AdminSections = ({
                         {booking.amount}
                       </p>
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${booking.paymentStatus === "success" ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center justify-end gap-1 ${booking.paymentStatus === "success" ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}
                       >
-                        {booking.paymentStatus === "success"
-                          ? "✓ Paid"
-                          : "Failed"}
+                        {booking.paymentStatus === "success" ? (
+                          <>
+                            <Check size={10} /> Paid
+                          </>
+                        ) : (
+                          "Failed"
+                        )}
                       </span>
                     </div>
                   </div>
@@ -291,7 +311,7 @@ const AdminSections = ({
 
           {filteredOwners.length === 0 ? (
             <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center">
-              <p className="text-3xl mb-3">🏢</p>
+              <Building2 size={36} className="text-gray-300 mx-auto mb-3" />
               <p className="text-sm font-bold text-gray-500">No owners found</p>
             </div>
           ) : (
@@ -315,8 +335,9 @@ const AdminSections = ({
                       <p className="text-xs text-gray-400 truncate">
                         {owner.address}
                       </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        🅿️ {owner.totalSlots} total slots
+                      <p className="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
+                        <SquareParking size={12} /> {owner.totalSlots} total
+                        slots
                       </p>
                     </div>
                     <span
@@ -328,26 +349,34 @@ const AdminSections = ({
                             : "bg-yellow-50 text-yellow-700 border-yellow-200"
                       }`}
                     >
-                      {owner.status === "approved"
-                        ? "✅ Approved"
-                        : owner.status === "rejected"
-                          ? "❌ Rejected"
-                          : "⏳ Pending"}
+                      {owner.status === "approved" ? (
+                        <span className="flex items-center gap-1">
+                          <CheckCircle2 size={11} /> Approved
+                        </span>
+                      ) : owner.status === "rejected" ? (
+                        <span className="flex items-center gap-1">
+                          <XCircle size={11} /> Rejected
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          <Clock size={11} /> Pending
+                        </span>
+                      )}
                     </span>
                   </div>
                   {owner.status === "pending" && (
                     <div className="flex gap-2 mt-4">
                       <button
                         onClick={() => handleVerifyOwner(owner._id, "approved")}
-                        className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-200 hover:bg-green-500 hover:text-white transition-all cursor-pointer"
+                        className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-green-50 text-green-700 border border-green-200 hover:bg-green-500 hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1.5"
                       >
-                        ✅ Approve
+                        <CheckCircle2 size={14} /> Approve
                       </button>
                       <button
                         onClick={() => handleVerifyOwner(owner._id, "rejected")}
-                        className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-red-50 text-red-500 border border-red-200 hover:bg-red-500 hover:text-white transition-all cursor-pointer"
+                        className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-red-50 text-red-500 border border-red-200 hover:bg-red-500 hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1.5"
                       >
-                        ❌ Reject
+                        <XCircle size={14} /> Reject
                       </button>
                     </div>
                   )}
@@ -371,9 +400,10 @@ const AdminSections = ({
             </span>
           </p>
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-              🔍
-            </span>
+            <Search
+              size={16}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+            />
             <input
               value={userSearch}
               onChange={(e) => setUserSearch(e.target.value)}
@@ -383,16 +413,16 @@ const AdminSections = ({
             {userSearch && (
               <button
                 onClick={() => setUserSearch("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs font-bold cursor-pointer"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
               >
-                ✕
+                <X size={14} />
               </button>
             )}
           </div>
 
           {filteredUsers.length === 0 ? (
             <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center">
-              <p className="text-3xl mb-3">👥</p>
+              <Users size={36} className="text-gray-300 mx-auto mb-3" />
               <p className="text-sm font-bold text-gray-500">
                 {userSearch
                   ? "No users found for this search"
@@ -431,28 +461,42 @@ const AdminSections = ({
                       <p className="text-xs truncate text-gray-400">
                         {user.email}
                       </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        📋 {userBookingCount} booking
+                      <p className="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
+                        <ClipboardList size={12} /> {userBookingCount} booking
                         {userBookingCount !== 1 ? "s" : ""}
                       </p>
                     </div>
                     <div className="text-right flex-shrink-0 flex flex-col items-end gap-2">
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${user.role === "admin" ? "bg-red-50 text-red-600" : "bg-gray-100 text-gray-500"}`}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 ${user.role === "admin" ? "bg-red-50 text-red-600" : "bg-gray-100 text-gray-500"}`}
                       >
-                        {user.role === "driver" ? "🚗 Driver" : "🏠 Owner"}
+                        {user.role === "driver" ? (
+                          <>
+                            <Car size={11} /> Driver
+                          </>
+                        ) : (
+                          <>
+                            <Home size={11} /> Owner
+                          </>
+                        )}
                       </span>
                       {user.role !== "admin" && (
                         <button
                           onClick={() => handleBanUser(user._id, user.status)}
                           disabled={banLoading === user._id}
-                          className={`text-[11px] font-bold px-3 py-1 rounded-full border transition-all cursor-pointer ${user.status === "banned" ? "bg-green-50 text-green-600 border-green-200 hover:bg-green-500 hover:text-white" : "bg-red-50 text-red-500 border-red-200 hover:bg-red-500 hover:text-white"}`}
+                          className={`text-[11px] font-bold px-3 py-1 rounded-full border transition-all cursor-pointer flex items-center gap-1 ${user.status === "banned" ? "bg-green-50 text-green-600 border-green-200 hover:bg-green-500 hover:text-white" : "bg-red-50 text-red-500 border-red-200 hover:bg-red-500 hover:text-white"}`}
                         >
-                          {banLoading === user._id
-                            ? "..."
-                            : user.status === "banned"
-                              ? "✅ Unban"
-                              : "🚫 Ban"}
+                          {banLoading === user._id ? (
+                            "..."
+                          ) : user.status === "banned" ? (
+                            <>
+                              <CheckCircle2 size={12} /> Unban
+                            </>
+                          ) : (
+                            <>
+                              <Ban size={12} /> Ban
+                            </>
+                          )}
                         </button>
                       )}
                     </div>
@@ -488,8 +532,8 @@ const AdminSections = ({
                   {userData.adminName}
                 </p>
                 <p className="text-sm text-gray-400">{userData.email}</p>
-                <span className="text-xs font-semibold bg-red-50 text-red-600 px-2 py-0.5 rounded-full">
-                  🛡 Super Admin
+                <span className="text-xs font-semibold bg-red-50 text-red-600 px-2 py-0.5 rounded-full flex items-center gap-1 w-fit mt-1">
+                  <ShieldCheck size={11} /> Super Admin
                 </span>
               </div>
             </div>

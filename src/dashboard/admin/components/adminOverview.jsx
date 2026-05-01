@@ -278,7 +278,6 @@ const AdminOverview = ({
               <span className="text-xs font-bold bg-red-50 text-red-500 px-2.5 py-1 rounded-full flex items-center gap-1">
                 <Banknote size={12} /> Revenue
               </span>{" "}
-              Revenue
             </span>
           </div>
           <ResponsiveContainer width="100%" height={180}>
