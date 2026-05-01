@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import {
+  MapPin,
+  Car,
+  ParkingSquare,
+  Building2,
+  Star,
+  Banknote,
+} from "lucide-react";
 
 const Hero = () => {
   useEffect(() => {
@@ -98,9 +106,8 @@ const Hero = () => {
             className="flex items-center bg-white border-2 border-gray-200 rounded-2xl p-1.5 sm:p-2 mb-4 w-full max-w-xs sm:max-w-md shadow-sm focus-within:border-green-400 transition-colors duration-200"
           >
             <div className="flex items-center gap-1 sm:gap-2 flex-1 px-2 sm:px-3 min-w-0">
-              <span className="text-gray-400 text-sm sm:text-base flex-shrink-0">
-                📍
-              </span>
+              <MapPin className="text-gray-400 w-4 h-4 flex-shrink-0" />
+
               <input
                 type="text"
                 value={searchQuery}
@@ -181,8 +188,8 @@ const Hero = () => {
             transition={{ duration: 0.45, delay: 0.45 }}
             className="absolute top-8 left-4 bg-white border border-gray-200 rounded-2xl px-4 py-3 shadow-lg z-10"
           >
-            <p className="text-xs font-semibold text-gray-500 mb-1">
-              📍 Infinity Mall
+            <p className="text-xs font-semibold text-gray-500 mb-1 flex items-center gap-1">
+              <MapPin className="w-3 h-3" /> Infinity Mall
             </p>
             <p className="text-xl font-black text-[#22C55E]">
               12{" "}
@@ -221,7 +228,7 @@ const Hero = () => {
             className="w-[290px] bg-white border border-gray-200 rounded-3xl shadow-[0_18px_45px_rgba(15,23,42,0.12)] overflow-hidden z-20 will-change-transform"
           >
             <div className="bg-gradient-to-br from-green-50 to-green-100 px-6 pt-8 pb-6 text-center">
-              <span className="text-7xl">🚗</span>
+              <Car className="w-16 h-16 text-green-500 mx-auto" />
               <h3 className="font-black text-gray-900 mt-3 mb-1">
                 Real-Time Parking
                 <br />
@@ -233,7 +240,7 @@ const Hero = () => {
             </div>
             <div className="p-4">
               <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2.5 mb-3">
-                <span className="text-gray-400 text-sm">📍</span>
+                <MapPin className="text-gray-400 w-4 h-4" />
                 <span className="text-xs text-gray-400 font-medium">
                   Enter destination
                 </span>
@@ -245,7 +252,7 @@ const Hero = () => {
                 {[
                   {
                     bg: "from-green-50 to-green-100",
-                    emoji: "🅿️",
+                    icon: <ParkingSquare className="w-8 h-8 text-green-500" />,
                     name: "Car Parking",
                     price: "₹40/hr",
                     rating: "4.7",
@@ -253,7 +260,7 @@ const Hero = () => {
                   },
                   {
                     bg: "from-gray-50 to-gray-100",
-                    emoji: "🏢",
+                    icon: <Building2 className="w-8 h-8 text-gray-500" />,
                     name: "Office Park",
                     price: "₹30/hr",
                     rating: "4.6",
@@ -269,7 +276,8 @@ const Hero = () => {
                     >
                       {spot.emoji}
                       <span className="absolute top-1 left-1 bg-white/90 text-yellow-500 text-[9px] font-bold px-1.5 py-0.5 rounded-md">
-                        ⭐{spot.rating}
+                        <Star className="w-2.5 h-2.5 text-yellow-500 fill-yellow-500" />
+                        {spot.rating}
                       </span>
                     </div>
                     <div className="p-2">
@@ -294,7 +302,7 @@ const Hero = () => {
             className="absolute bottom-12 right-4 bg-white border border-gray-200 rounded-2xl px-4 py-3 shadow-lg z-10"
           >
             <span className="text-xs bg-green-50 text-green-700 font-bold px-2 py-1 rounded-lg">
-              💰 Best Nearby
+              <Banknote className="w-3 h-3" /> Best Nearby{" "}
             </span>
             <p className="text-xl font-black text-[#22C55E] mt-1">₹30/hr</p>
             <p className="text-xs text-gray-400">Phoenix Mall · 0.8km</p>

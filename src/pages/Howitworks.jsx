@@ -1,6 +1,21 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
+import {
+  Search,
+  ParkingSquare,
+  ClipboardList,
+  Car,
+  FilePen,
+  Building2,
+  CheckCircle,
+  Banknote,
+  Zap,
+  Lock,
+  MapPin,
+  BarChart2,
+  Bike,
+  Clock,
+} from "lucide-react";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 import { useEffect } from "react";
@@ -8,52 +23,51 @@ import { useEffect } from "react";
 const driverSteps = [
   {
     step: "01",
-    icon: "🔍",
+    icon: <Search className="w-7 h-7 text-green-500" />,
     title: "Search Nearby",
     desc: "Enter your location, city or landmark to find available parking spots near you in real-time.",
   },
   {
     step: "02",
-    icon: "🅿️",
+    icon: <ParkingSquare className="w-7 h-7 text-green-500" />,
     title: "Pick a Slot",
     desc: "Browse the live slot grid, see which slots are free, and select the one that works best for you.",
   },
   {
     step: "03",
-    icon: "📋",
+    icon: <ClipboardList className="w-7 h-7 text-green-500" />,
     title: "Book It",
     desc: "Confirm your booking with your vehicle details, date and time. Instant confirmation — no waiting.",
   },
   {
     step: "04",
-    icon: "🚗",
+    icon: <Car className="w-7 h-7 text-green-500" />,
     title: "Park & Go",
     desc: "Head to the parking, show your booking, and park stress-free. It's that simple.",
   },
 ];
-
 const ownerSteps = [
   {
     step: "01",
-    icon: "📝",
+    icon: <FilePen className="w-7 h-7 text-blue-500" />,
     title: "Create Account",
     desc: "Sign up as an owner in seconds using your email or Google account.",
   },
   {
     step: "02",
-    icon: "🏢",
+    icon: <Building2 className="w-7 h-7 text-blue-500" />,
     title: "List Your Space",
     desc: "Add your parking lot details — location, slots, pricing, timings and vehicle types.",
   },
   {
     step: "03",
-    icon: "✅",
+    icon: <CheckCircle className="w-7 h-7 text-blue-500" />,
     title: "Accept Bookings",
     desc: "Get notified when drivers book your space. Accept or auto-approve based on your preference.",
   },
   {
     step: "04",
-    icon: "💰",
+    icon: <Banknote className="w-7 h-7 text-blue-500" />,
     title: "Start Earning",
     desc: "Track your bookings and earnings from your dashboard. Money directly to your account.",
   },
@@ -61,32 +75,32 @@ const ownerSteps = [
 
 const features = [
   {
-    icon: "⚡",
+    icon: <Zap className="w-6 h-6 text-yellow-500" />,
     title: "Real-Time Slots",
     desc: "Live availability updates so you never arrive at a full lot.",
   },
   {
-    icon: "🔒",
+    icon: <Lock className="w-6 h-6 text-gray-600" />,
     title: "Secure Booking",
     desc: "Your booking is confirmed instantly and stored safely.",
   },
   {
-    icon: "📍",
+    icon: <MapPin className="w-6 h-6 text-red-500" />,
     title: "GPS Precision",
     desc: "Exact parking location with map view and directions.",
   },
   {
-    icon: "📊",
+    icon: <BarChart2 className="w-6 h-6 text-purple-500" />,
     title: "Owner Analytics",
     desc: "Track earnings, occupancy and booking trends easily.",
   },
   {
-    icon: "🚘",
+    icon: <Bike className="w-6 h-6 text-green-500" />,
     title: "Multi-Vehicle",
     desc: "Support for both 2-wheelers and 4-wheelers.",
   },
   {
-    icon: "🕐",
+    icon: <Clock className="w-6 h-6 text-blue-500" />,
     title: "Flexible Hours",
     desc: "Book by the hour, day or month — your choice.",
   },
@@ -144,7 +158,7 @@ const HowItWorks = () => {
         >
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 bg-green-50 border border-green-200 rounded-xl flex items-center justify-center text-xl">
-              🚗
+              <Car className="text-green-600" />
             </div>
             <div>
               <p className="text-xs font-bold text-green-600 uppercase tracking-wider">

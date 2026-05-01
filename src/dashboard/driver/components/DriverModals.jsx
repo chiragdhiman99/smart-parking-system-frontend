@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { AlertTriangle, X, Star } from "lucide-react";
 
 const CancelModal = ({ cancelModal, setCancelModal, handleCancelBooking }) => (
   <AnimatePresence>
@@ -147,7 +148,7 @@ const ReportModal = ({
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">🚨</span>
+                  <AlertTriangle className="w-5 h-5 text-orange-500" />
                   <h2 className="text-base font-black text-gray-800">
                     Report an Issue
                   </h2>
@@ -159,7 +160,7 @@ const ReportModal = ({
                   }}
                   className="text-gray-400 hover:text-gray-600 text-lg cursor-pointer"
                 >
-                  ✕
+                  <X className="w-5 h-5 cursor-pointer text-gray-400 hover:text-gray-600" />
                 </button>
               </div>
 
@@ -229,7 +230,8 @@ const ReviewModal = ({
             onClick={() => setReviewModal(null)}
             className="text-gray-400 hover:text-gray-600 text-lg cursor-pointer"
           >
-            ✕
+            <X className="w-5 h-5 cursor-pointer text-gray-400 hover:text-gray-600" />
+
           </button>
         </div>
 
@@ -242,9 +244,11 @@ const ReviewModal = ({
             <button
               key={star}
               onClick={() => setReviewRating(star)}
-              className="text-2xl cursor-pointer transition-transform hover:scale-110"
+              className="cursor-pointer transition-transform hover:scale-110"
             >
-              {star <= reviewRating ? "⭐" : "☆"}
+              <Star
+                className={`w-7 h-7 ${star <= reviewRating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+              />
             </button>
           ))}
         </div>

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Menu, Bell, Circle } from "lucide-react";
 
 import DriverSidebar, {
   navItems,
@@ -61,9 +62,12 @@ const DriverDashboard = () => {
   useEffect(() => {
     if (!decoded) return;
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((res) => setUserData(res.data))
       .catch(() =>
         toast.error("Failed to fetch user data. Please log in again."),
@@ -73,9 +77,12 @@ const DriverDashboard = () => {
   useEffect(() => {
     if (!userData?.email) return;
     axios
-      .get("https://smart-parking-system-backend-oco6.onrender.com/api/bookings/get/booking", {
-        params: { userEmail: userData.email },
-      })
+      .get(
+        "https://smart-parking-system-backend-oco6.onrender.com/api/bookings/get/booking",
+        {
+          params: { userEmail: userData.email },
+        },
+      )
       .then((res) => setBookingData(res.data))
       .catch(() =>
         toast.error("Failed to fetch booking data. Please try again."),
@@ -85,7 +92,9 @@ const DriverDashboard = () => {
   useEffect(() => {
     if (!decoded) return;
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/${decoded.userId}`)
+      .get(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications/${decoded.userId}`,
+      )
       .then((res) => {
         setNotifications(res.data.filter((n) => n.role === "user"));
       })
@@ -128,12 +137,15 @@ const DriverDashboard = () => {
     if (!reportText.trim()) return;
     setReportSubmitting(true);
     try {
-      await axios.post("https://smart-parking-system-backend-oco6.onrender.com/api/notifications", {
-        userId: decoded.userId,
-        message: `🚨 Issue Reported by ${userData.fullName}: "${reportText}" — Slot ${reportModal.slot} | Booking ID: ${reportModal._id}`,
-        isread: false,
-        role: "admin",
-      });
+      await axios.post(
+        "https://smart-parking-system-backend-oco6.onrender.com/api/notifications",
+        {
+          userId: decoded.userId,
+          message: `🚨 Issue Reported by ${userData.fullName}: "${reportText}" — Slot ${reportModal.slot} | Booking ID: ${reportModal._id}`,
+          isread: false,
+          role: "admin",
+        },
+      );
       setReportModal(null);
       setReportText("");
       toast.success("Report submitted successfully!");
@@ -145,7 +157,9 @@ const DriverDashboard = () => {
 
   const markAllRead = () => {
     axios
-      .put(`https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/${decoded.userId}`)
+      .put(
+        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/${decoded.userId}`,
+      )
       .then(() =>
         setNotifications((prev) => prev.map((n) => ({ ...n, isread: true }))),
       )
@@ -175,14 +189,17 @@ const DriverDashboard = () => {
 
   const handlereviewsubmit = () => {
     axios
-      .post("https://smart-parking-system-backend-oco6.onrender.com/api/reviews", {
-        userId: decoded.userId,
-        userName: userData.fullName,
-        parkingId: reviewModal.parkingid,
-        bookingId: reviewModal._id,
-        rating: reviewRating,
-        comment: reviewComment,
-      })
+      .post(
+        "https://smart-parking-system-backend-oco6.onrender.com/api/reviews",
+        {
+          userId: decoded.userId,
+          userName: userData.fullName,
+          parkingId: reviewModal.parkingid,
+          bookingId: reviewModal._id,
+          rating: reviewRating,
+          comment: reviewComment,
+        },
+      )
       .then(() => {
         setReviewedBookings([...reviewedBookings, reviewModal._id]);
         setReviewModal(null);
@@ -209,7 +226,7 @@ const DriverDashboard = () => {
   const myReviews = useMemo(() => {
     return allreviews.filter((r) => r.userId === decoded?.userId);
   }, [allreviews, decoded?.userId]);
-  
+
   const myAvgRating = useMemo(() => {
     return myReviews.length > 0
       ? (
@@ -242,7 +259,7 @@ const DriverDashboard = () => {
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden text-gray-500 cursor-pointer"
             >
-              ☰
+              <Menu className="w-5 h-5" />
             </button>
             <div>
               <h1 className="text-lg font-black text-gray-900">
@@ -259,9 +276,8 @@ const DriverDashboard = () => {
               onClick={() => setNotifOpen(!notifOpen)}
               className="relative p-2 text-gray-400 hover:text-orange-500 transition-all duration-200 cursor-pointer group"
             >
-              <span className="text-xl group-hover:scale-110 inline-block transition-transform duration-200">
-                🔔
-              </span>
+              <Bell className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+
               {notifications.filter((n) => !n.isread).length > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                   {notifications.filter((n) => !n.isread).length}
@@ -302,7 +318,11 @@ const DriverDashboard = () => {
                           className={`px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition cursor-pointer ${!notif.isread ? "bg-orange-50" : ""}`}
                         >
                           <span className="text-xl mt-0.5">
-                            {notif.isread ? "🔔" : "🔴"}
+                            {notif.isread ? (
+                              <Bell className="w-4 h-4 mt-0.5 text-gray-400 flex-shrink-0" />
+                            ) : (
+                              <Circle className="w-4 h-4 mt-0.5 text-red-500 fill-red-500 flex-shrink-0" />
+                            )}{" "}
                           </span>
                           <div className="flex-1">
                             <p className="text-sm text-gray-700">

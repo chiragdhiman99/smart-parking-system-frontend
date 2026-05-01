@@ -1,12 +1,24 @@
 import { useNavigate } from "react-router-dom";
+import {
+  Home,
+  ClipboardList,
+  Clock,
+  User,
+  Car,
+  Search,
+  LogOut,
+} from "lucide-react";
 
 const navItems = [
-  { id: "overview", label: "Overview", icon: "🏠" },
-  { id: "bookings", label: "My Bookings", icon: "📋" },
-  { id: "history", label: "History", icon: "🕐" },
-  { id: "profile", label: "Profile", icon: "👤" },
+  { id: "overview", label: "Overview", icon: <Home className="w-4 h-4" /> },
+  {
+    id: "bookings",
+    label: "My Bookings",
+    icon: <ClipboardList className="w-4 h-4" />,
+  },
+  { id: "history", label: "History", icon: <Clock className="w-4 h-4" /> },
+  { id: "profile", label: "Profile", icon: <User className="w-4 h-4" /> },
 ];
-
 const getInitials = (name) => {
   if (!name) return "U";
   return name
@@ -17,7 +29,13 @@ const getInitials = (name) => {
     .slice(0, 2);
 };
 
-const DriverSidebar = ({ activeNav, setActiveNav, sidebarOpen, setSidebarOpen, userData }) => {
+const DriverSidebar = ({
+  activeNav,
+  setActiveNav,
+  sidebarOpen,
+  setSidebarOpen,
+  userData,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -53,9 +71,11 @@ const DriverSidebar = ({ activeNav, setActiveNav, sidebarOpen, setSidebarOpen, u
               </div>
             )}
             <div>
-              <p className="text-sm font-bold text-gray-900">{userData.fullName}</p>
-              <span className="text-[10px] font-semibold bg-green-50 text-green-700 px-2 py-0.5 rounded-full">
-                🚗 Driver
+              <p className="text-sm font-bold text-gray-900">
+                {userData.fullName}
+              </p>
+              <span className="text-[10px] font-semibold bg-green-50 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1 w-fit">
+                <Car className="w-3 h-3" /> Driver
               </span>
             </div>
           </div>
@@ -86,7 +106,7 @@ const DriverSidebar = ({ activeNav, setActiveNav, sidebarOpen, setSidebarOpen, u
             onClick={() => navigate("/search")}
             className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 rounded-xl text-sm transition-all cursor-pointer"
           >
-            🔍 Find Parking
+            <Search className="w-4 h-4" /> Find Parking
           </button>
         </div>
 
@@ -98,7 +118,7 @@ const DriverSidebar = ({ activeNav, setActiveNav, sidebarOpen, setSidebarOpen, u
             }}
             className="w-full text-red-500 hover:bg-red-50 font-semibold py-2.5 rounded-xl text-sm transition-all cursor-pointer"
           >
-            Logout →
+            <LogOut className="w-4 h-4" /> Logout
           </button>
         </div>
       </aside>

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Map, Zap, BadgeDollarSign } from "lucide-react";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
@@ -9,20 +10,19 @@ const fadeUp = (delay = 0) => ({
 
 const features = [
   {
-    icon: "🗺️",
+    icon: <Map className="w-5 h-5 text-green-600" />,
     bg: "bg-green-50",
     title: "Live Interactive Map",
     desc: "See all nearby parking in real-time. Available slots update live on the map.",
   },
   {
-    icon: "⚡",
+    icon: <Zap className="w-5 h-5 text-blue-600" />,
     bg: "bg-blue-50",
     title: "Instant Slot Booking",
     desc: "Reserve your slot in under 30 seconds. QR confirmation instantly on screen.",
   },
-
   {
-    icon: "💰",
+    icon: <BadgeDollarSign className="w-5 h-5 text-red-500" />,
     bg: "bg-red-50",
     title: "Transparent Pricing",
     desc: "No hidden charges. Hourly, daily, or monthly rates — always clear before booking.",

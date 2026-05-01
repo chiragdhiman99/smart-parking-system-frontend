@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Search, ParkingSquare, CheckCircle, Car } from "lucide-react";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
@@ -6,29 +7,28 @@ const fadeUp = (delay = 0) => ({
   viewport: { once: true },
   transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] },
 });
-
 const steps = [
   {
     n: "01",
-    icon: "🔍",
+    icon: <Search className="w-5 h-5 text-green-600" />,
     title: "Search Location",
     desc: "Enter your destination and see all nearby parking spots on an interactive live map.",
   },
   {
     n: "02",
-    icon: "🅿️",
+    icon: <ParkingSquare className="w-5 h-5 text-green-600" />,
     title: "Choose Your Slot",
     desc: "Filter by price, vehicle type, timing, and distance. Pick your preferred slot.",
   },
   {
     n: "03",
-    icon: "✅",
+    icon: <CheckCircle className="w-5 h-5 text-green-600" />,
     title: "Confirm Booking",
     desc: "Reserve your slot instantly and get a booking confirmation with QR code.",
   },
   {
     n: "04",
-    icon: "🚗",
+    icon: <Car className="w-5 h-5 text-green-600" />,
     title: "Park & Go!",
     desc: "Show QR code at entry gate and park stress-free. No more searching!",
   },

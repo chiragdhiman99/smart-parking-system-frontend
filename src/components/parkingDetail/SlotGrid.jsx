@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useCallback } from "react";
+import { Car, Bike } from "lucide-react";
 
 const slotStatusStyle = {
   available:
@@ -45,16 +46,16 @@ const SlotGrid = ({
   const bikeLeftRows = chunk(bikeLeft, 2);
   const bikeRightRows = chunk(bikeRight, 2);
 
- const handleSelect = useCallback(
-  (slot) => {
-    if (slot.status !== "available") return;
-    setSelectedSlot(selectedSlot?.id === slot.id ? null : slot);
-    
-    if (slot.type === "car") setSelectedVehicle("4-wheeler");
-    if (slot.type === "bike") setSelectedVehicle("2-wheeler");
-  },
-  [selectedSlot, setSelectedSlot, setSelectedVehicle],
-);
+  const handleSelect = useCallback(
+    (slot) => {
+      if (slot.status !== "available") return;
+      setSelectedSlot(selectedSlot?.id === slot.id ? null : slot);
+
+      if (slot.type === "car") setSelectedVehicle("4-wheeler");
+      if (slot.type === "bike") setSelectedVehicle("2-wheeler");
+    },
+    [selectedSlot, setSelectedSlot, setSelectedVehicle],
+  );
 
   const SlotBox = ({ slot, isWide }) => (
     <div
@@ -94,8 +95,8 @@ const SlotGrid = ({
         <div className="flex gap-2 sm:gap-3 min-w-max mx-auto w-fit px-1">
           {carSlots.length > 0 && (
             <div className="flex-shrink-0">
-              <p className="text-[10px] sm:text-xs font-bold text-green-600 mb-2 text-center">
-                🚗 4-Wheeler
+              <p className="text-[10px] sm:text-xs font-bold text-green-600 mb-2 text-center flex items-center justify-center gap-1">
+                <Car className="w-3 h-3" /> 4-Wheeler
               </p>
               <div className="flex flex-col gap-1.5 sm:gap-2">
                 {carRows.map((row, ri) => (
@@ -134,8 +135,8 @@ const SlotGrid = ({
 
           {bikeLeftRows.length > 0 && (
             <div className="flex-shrink-0">
-              <p className="text-[10px] sm:text-xs font-bold text-blue-500 mb-2 text-center">
-                🛵 2-Wheeler
+              <p className="text-[10px] sm:text-xs font-bold text-blue-500 mb-2 text-center flex items-center justify-center gap-1">
+                <Bike className="w-3 h-3" /> 2-Wheeler
               </p>
               <div className="flex flex-col gap-1 sm:gap-1.5">
                 {bikeLeftRows.map((row, ri) => (

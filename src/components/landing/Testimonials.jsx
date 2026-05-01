@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Star, Car, Building2 } from "lucide-react";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
@@ -35,7 +36,10 @@ const Testimonials = () => {
             role: r.role || "Verified User",
             text: r.comment,
             rating: r.rating,
-            tag: r.role === "driver" ? "🚗 Driver" : "🏢 Owner",
+            tag:
+              r.role === "driver"
+                ? { icon: <Car className="w-3 h-3" />, label: "Driver" }
+                : { icon: <Building2 className="w-3 h-3" />, label: "Owner" },
           })),
         );
       })
@@ -77,14 +81,19 @@ const Testimonials = () => {
                   <p className="text-xs text-gray-400">{t.role}</p>
                 </div>
               </div>
-              <p className="text-yellow-400 text-sm mb-3">
-                {"⭐".repeat(t.rating)}
-              </p>
+              <div className="flex items-center gap-0.5 mb-3">
+                {Array.from({ length: t.rating }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-4 h-4 text-yellow-400 fill-yellow-400"
+                  />
+                ))}
+              </div>
               <p className="text-sm text-gray-500 leading-relaxed italic mb-4">
                 "{t.text}"
               </p>
-              <span className="bg-green-50 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-lg">
-                {t.tag}
+              <span className="bg-green-50 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-lg flex items-center gap-1 w-fit">
+                {t.tag.icon} {t.tag.label}
               </span>
             </motion.div>
           ))}

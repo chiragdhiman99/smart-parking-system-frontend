@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
+import { ParkingSquare, Car, Building2, Mail, Lock, X } from "lucide-react";
 
 const Login = () => {
   useEffect(() => {
@@ -63,11 +64,14 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post("https://smart-parking-system-backend-oco6.onrender.com/api/auth/login", {
-        email: form.email,
-        password: form.password,
-        role: activeTab,
-      });
+      const res = await axios.post(
+        "https://smart-parking-system-backend-oco6.onrender.com/api/auth/login",
+        {
+          email: form.email,
+          password: form.password,
+          role: activeTab,
+        },
+      );
 
       localStorage.setItem("token", res.data.token);
       const role = res.data.role;
@@ -84,7 +88,8 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://smart-parking-system-backend-oco6.onrender.com/api/auth/google";
+    window.location.href =
+      "https://smart-parking-system-backend-oco6.onrender.com/api/auth/google";
     setShowRolePopup(true);
   };
 
@@ -108,7 +113,9 @@ const Login = () => {
                 }}
                 className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold py-4 rounded-xl text-base transition-all cursor-pointer"
               >
-                🚗 I'm a Driver
+                <span className="flex items-center justify-center gap-2">
+                  <Car className="w-4 h-4" /> I'm a Driver
+                </span>{" "}
               </button>
               <button
                 onClick={() => {
@@ -118,7 +125,9 @@ const Login = () => {
                 }}
                 className="w-full border-2 border-gray-200 hover:border-green-400 text-gray-700 font-bold py-4 rounded-xl text-base transition-all cursor-pointer"
               >
-                🏢 I'm a Parking Owner
+                <span className="flex items-center justify-center gap-2">
+                  <Building2 className="w-4 h-4" /> I'm a Parking Owner
+                </span>{" "}
               </button>
             </div>
           </div>
@@ -149,7 +158,9 @@ const Login = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="text-5xl mb-6">🅿️</div>
+              <div className="mb-6">
+                <ParkingSquare className="w-12 h-12 text-white" />
+              </div>{" "}
               <h2 className="text-4xl font-black text-white leading-tight mb-4">
                 Your Parking
                 <br />
@@ -224,7 +235,15 @@ const Login = () => {
                       : "text-gray-500 hover:text-gray-700"
                   }`}
                 >
-                  {tab === "driver" ? "🚗 Driver" : "🏢 Owner"}
+                  {tab === "driver" ? (
+                    <span className="flex items-center justify-center gap-1.5">
+                      <Car className="w-4 h-4" /> Driver
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center gap-1.5">
+                      <Building2 className="w-4 h-4" /> Owner
+                    </span>
+                  )}{" "}
                 </button>
               ))}
             </div>
@@ -241,7 +260,7 @@ const Login = () => {
                       : "border-gray-200 focus-within:border-[#22C55E]"
                   }`}
                 >
-                  <span className="text-gray-400 mr-2 text-sm">✉️</span>
+                  <Mail className="text-gray-400 mr-2 w-4 h-4 flex-shrink-0" />
                   <input
                     type="email"
                     name="email"
@@ -263,7 +282,11 @@ const Login = () => {
                       exit={{ opacity: 0, y: -4 }}
                       className="text-red-500 text-xs font-medium mt-1 ml-1"
                     >
-                      ✕ {errors.email}
+                      {" "}
+                      <span className="flex items-center gap-1">
+                        <X className="w-3 h-3" /> {errors.email}
+                      </span>{" "}
+                     
                     </motion.p>
                   )}
                 </AnimatePresence>
@@ -285,7 +308,7 @@ const Login = () => {
                       : "border-gray-200 focus-within:border-[#22C55E]"
                   }`}
                 >
-                  <span className="text-gray-400 mr-2 text-sm">🔒</span>
+                  <Lock className="text-gray-400 mr-2 w-4 h-4 flex-shrink-0" />
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
@@ -340,7 +363,9 @@ const Login = () => {
                       exit={{ opacity: 0, y: -4 }}
                       className="text-red-500 text-xs font-medium mt-1 ml-1"
                     >
-                      ✕ {errors.password}
+                      <span className="flex items-center gap-1">
+                        <X className="w-3 h-3" /> {errors.password}
+                      </span>{" "}
                     </motion.p>
                   )}
                 </AnimatePresence>
@@ -354,7 +379,9 @@ const Login = () => {
                     exit={{ opacity: 0, y: -4 }}
                     className="text-red-500 text-xs font-medium ml-1"
                   >
-                    ✕ {errors.general}
+                    <span className="flex items-center gap-1">
+                      <X className="w-3 h-3" /> {errors.email}
+                    </span>{" "}
                   </motion.p>
                 )}
               </AnimatePresence>
@@ -442,7 +469,9 @@ const Login = () => {
                 }}
                 className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold py-4 rounded-xl text-base transition-all cursor-pointer"
               >
-                🚗 I'm a Driver
+                <span className="flex items-center justify-center gap-2">
+                  <Car className="w-4 h-4" /> I'm a Driver
+                </span>{" "}
               </button>
               <button
                 onClick={() => {
@@ -452,7 +481,9 @@ const Login = () => {
                 }}
                 className="w-full border-2 border-gray-200 hover:border-green-400 text-gray-700 font-bold py-4 rounded-xl text-base transition-all cursor-pointer"
               >
-                🏢 I'm a Parking Owner
+                <span className="flex items-center justify-center gap-2">
+                  <Building2 className="w-4 h-4" /> I'm a Parking Owner
+                </span>
               </button>
             </div>
           </div>

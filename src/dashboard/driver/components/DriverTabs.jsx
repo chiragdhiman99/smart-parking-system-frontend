@@ -1,6 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
+import {
+  ClipboardList,
+  Banknote,
+  Trophy,
+  Car,
+  ParkingSquare,
+  Search,
+  AlertTriangle,
+  Clock,
+  Star,
+  Wallet,
+  History,
+  ChevronRight,
+  CheckCircle,
+  PartyPopper,
+  UserCircle,
+} from "lucide-react";
 
 const statusStyle = {
   active: "bg-green-50 text-green-700 border border-green-200",
@@ -29,25 +46,25 @@ const OverviewTab = ({
           {
             label: "Total Bookings",
             value: bookingdata.length,
-            icon: "📋",
+            icon: <ClipboardList className="w-5 h-5" />,
             color: "bg-blue-50 text-blue-700",
           },
           {
             label: "Total Spent",
             value: totalspent,
-            icon: "💰",
+            icon: <Banknote className="w-5 h-5" />,
             color: "bg-green-50 text-green-700",
           },
           {
             label: "Your Rating",
             value: myAvgRating + " ⭐",
-            icon: "🏆",
+            icon: <Trophy className="w-5 h-5" />,
             color: "bg-yellow-50 text-yellow-700",
           },
           {
             label: "Role",
             value: userData.role,
-            icon: "🚗",
+            icon: <Car className="w-5 h-5" />,
             color: "bg-purple-50 text-purple-700",
           },
         ].map((stat, i) => (
@@ -80,15 +97,15 @@ const OverviewTab = ({
           <p className="text-sm font-black text-gray-900">Recent Bookings</p>
           <button
             onClick={() => setActiveNav("bookings")}
-            className="text-xs font-bold text-[#22C55E] cursor-pointer hover:text-[#16A34A] transition-colors duration-200"
+            className="text-xs font-bold text-[#22C55E] cursor-pointer hover:text-[#16A34A] transition-colors duration-200 flex items-center gap-1"
           >
-            View All →
+            View All <ChevronRight className="w-3 h-3" />
           </button>
         </div>
 
         {bookingdata.length === 0 ? (
           <div className="bg-white rounded-2xl border border-gray-100 p-6 text-center">
-            <p className="text-2xl mb-2">🅿️</p>
+            <ParkingSquare className="w-8 h-8 mx-auto mb-2 text-gray-300" />
             <p className="text-sm font-bold text-gray-500">No bookings yet</p>
             <p className="text-xs text-gray-400 mt-1">
               Find a parking spot to get started
@@ -137,9 +154,10 @@ const OverviewTab = ({
 
       <button
         onClick={() => navigate("/search")}
-        className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 rounded-2xl text-sm transition-all cursor-pointer"
+        className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 rounded-2xl text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
       >
-        🔍 Find Parking →
+        <Search className="w-4 h-4" /> Find Parking{" "}
+        <ChevronRight className="w-4 h-4" />
       </button>
     </motion.div>
   );
@@ -178,16 +196,16 @@ const BookingsTab = ({
 
     {filteredBookings.length === 0 ? (
       <div className="text-center py-16 text-gray-400">
-        <p className="text-4xl mb-3">📋</p>
+        <ClipboardList className="w-10 h-10 mx-auto mb-3 text-gray-300" />
         <p className="text-sm font-bold text-gray-500">No bookings yet</p>
         <p className="text-xs text-gray-400 mt-1">
           Book a parking spot to see it here
         </p>
         <button
           onClick={() => navigate("/search")}
-          className="mt-4 bg-[#22C55E] text-white font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer"
+          className="mt-4 bg-[#22C55E] text-white font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer flex items-center gap-1.5 mx-auto"
         >
-          Find Parking →
+          Find Parking <ChevronRight className="w-4 h-4" />
         </button>
       </div>
     ) : (
@@ -231,13 +249,19 @@ const BookingsTab = ({
                   {booking.amount}
                 </p>
                 <span
-                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 justify-end ${
                     booking.paymentStatus === "success"
                       ? "bg-green-50 text-green-600"
                       : "bg-red-50 text-red-500"
                   }`}
                 >
-                  {booking.paymentStatus === "success" ? "✓ Paid" : "Failed"}
+                  {booking.paymentStatus === "success" ? (
+                    <>
+                      <CheckCircle className="w-3 h-3" /> Paid
+                    </>
+                  ) : (
+                    "Failed"
+                  )}
                 </span>
               </div>
             </div>
@@ -291,7 +315,7 @@ const BookingsTab = ({
                 onClick={() => setReportModal(booking)}
                 className="w-full py-2 cursor-pointer rounded-xl text-xs font-bold border border-orange-200 text-orange-500 bg-orange-50 hover:bg-orange-500 hover:text-white transition-all duration-200 active:scale-95 flex items-center justify-center gap-1.5"
               >
-                🚨 Report an Issue
+                <AlertTriangle className="w-3.5 h-3.5" /> Report an Issue
               </button>
             )}
           </div>
@@ -318,13 +342,13 @@ const HistoryTab = ({
         {
           label: "Total Parkings",
           value: bookingdata.length,
-          icon: "🅿️",
+          icon: <ParkingSquare className="w-5 h-5" />,
           color: "bg-blue-50 text-blue-700",
         },
         {
           label: "Total Spent",
           value: `₹${totalspent}`,
-          icon: "💰",
+          icon: <Wallet className="w-5 h-5" />,
           color: "bg-green-50 text-green-700",
         },
         {
@@ -336,7 +360,7 @@ const HistoryTab = ({
               return acc + (th * 60 + tm - (fh * 60 + fm)) / 60;
             }, 0)
             .toFixed(1)}h`,
-          icon: "🕐",
+          icon: <Clock className="w-5 h-5" />,
           color: "bg-purple-50 text-purple-700",
         },
       ].map((stat, i) => (
@@ -360,16 +384,16 @@ const HistoryTab = ({
 
       {bookingdata.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center">
-          <p className="text-3xl mb-3">🕐</p>
+          <History className="w-8 h-8 mx-auto mb-3 text-gray-300" />
           <p className="text-sm font-bold text-gray-500">No history yet</p>
           <p className="text-xs text-gray-400 mt-1">
             Your parking history will appear here
           </p>
           <button
             onClick={() => navigate("/search")}
-            className="mt-4 bg-[#22C55E] text-white font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer"
+            className="mt-4 bg-[#22C55E] text-white font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer flex items-center gap-1.5 mx-auto"
           >
-            Find Parking →
+            Find Parking <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       ) : (
@@ -448,7 +472,7 @@ const HistoryTab = ({
                   <p className="text-sm text-green-700 font-medium">
                     Thank you for your review!
                   </p>
-                  <span className="text-lg">🎉</span>
+                  <PartyPopper className="w-4 h-4 text-green-600" />
                 </motion.div>
               ) : (
                 booking.bookingStatus === "completed" && (
@@ -456,8 +480,10 @@ const HistoryTab = ({
                     onClick={() => setReviewModal(booking)}
                     className="flex items-center gap-3 border border-dashed border-gray-400 rounded-xl px-4 py-2.5 cursor-text hover:border-green-400 transition-all group"
                   >
-                    <span className="text-gray-400 text-sm group-hover:text-yellow-400 transition-colors">
-                      ☆ ☆ ☆ ☆ ☆
+                    <span className="text-gray-400 text-sm group-hover:text-yellow-400 transition-colors flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5" />
+                      ))}
                     </span>
                     <span className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">
                       Add a review...
@@ -516,8 +542,8 @@ const ProfileTab = ({
               {userData.fullName}
             </p>
             <p className="text-sm text-gray-400">{userData.email}</p>
-            <span className="text-xs font-semibold bg-green-50 text-green-700 px-2 py-0.5 rounded-full">
-              🚗 Driver
+            <span className="text-xs font-semibold bg-green-50 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1 w-fit">
+              <Car className="w-3 h-3" /> Driver
             </span>
           </div>
         </div>

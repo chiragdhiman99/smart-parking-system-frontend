@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FiSearch } from "react-icons/fi";
+import { Search as SearchIcon, MapPin, X, Star } from "lucide-react";
 import Navbar from "../components/common/Navbar";
 import axios from "axios";
 import MapView from "./MapView";
@@ -208,9 +208,8 @@ const Search = () => {
             <div className="max-w-7xl mx-auto px-6 lg:px-16 py-4">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 w-full">
                 <div className="flex-1 flex items-center bg-gray-50 border-2 border-gray-200 rounded-xl px-2 sm:px-4 py-2 sm:py-2.5 focus-within:border-green-400 transition-colors duration-200 min-w-0">
-                  <span className="text-gray-400 mr-1 sm:mr-2 text-xs sm:text-sm flex-shrink-0">
-                    🔍
-                  </span>
+                  <SearchIcon className="text-gray-400 w-4 h-4 mr-1 sm:mr-2 flex-shrink-0" />
+
                   <input
                     type="text"
                     value={searchQuery}
@@ -221,9 +220,9 @@ const Search = () => {
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery("")}
-                      className="text-gray-400 hover:text-gray-600 ml-1 sm:ml-2 flex-shrink-0 text-xs sm:text-sm"
+                      className="text-gray-400 hover:text-gray-600 ml-1 sm:ml-2 flex-shrink-0"
                     >
-                      ✕
+                      <X className="w-3 h-3" />
                     </button>
                   )}
                 </div>
@@ -327,8 +326,9 @@ const Search = () => {
           <div className="max-w-7xl mx-auto px-6 lg:px-16 py-8">
             {outOfRange && (
               <div className="text-center py-4 bg-yellow-50 border border-yellow-200 rounded-xl mb-6">
-                <p className="text-sm font-bold text-yellow-700">
-                  📍 We currently serve Delhi NCR only!
+                <p className="text-sm font-bold text-yellow-700 flex items-center justify-center gap-1">
+                  <MapPin className="w-4 h-4" /> We currently serve Delhi NCR
+                  only!
                 </p>
                 <p className="text-xs text-yellow-600 mt-1">
                   Showing all available parkings for your reference
@@ -351,7 +351,7 @@ const Search = () => {
                   }}
                   className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-2xl"
                 >
-                  <FiSearch className="text-emerald-600" />
+                  <SearchIcon className="text-emerald-600 w-6 h-6" />
                 </motion.div>
                 <h2 className="text-2xl font-black text-gray-900">
                   No results found
@@ -440,7 +440,11 @@ const Search = () => {
                         {parking.slots > 0 ? `${parking.slots} Free` : "Full"}
                       </div>
                       <div className="absolute top-3 right-3 bg-white/90 backdrop-blur px-2.5 py-1.5 rounded-xl text-xs font-bold text-gray-700">
-                        {parking.distance ? `📍 ${parking.distance} km` : null}
+                        {parking.distance && (
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3" /> {parking.distance} km
+                          </span>
+                        )}
                       </div>
                       <div className="absolute bottom-3 left-3 flex gap-1.5">
                         {parking.vehicleTypes.map((vehicleType) => (
@@ -459,6 +463,7 @@ const Search = () => {
                           {parking.name}
                         </h3>
                         <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg flex-shrink-0">
+                          <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                           <span className="text-xs font-bold text-gray-700">
                             {parking.rating}
                           </span>
