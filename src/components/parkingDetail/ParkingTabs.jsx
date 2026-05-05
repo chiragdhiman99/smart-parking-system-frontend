@@ -1,14 +1,34 @@
 import { motion } from "framer-motion";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import SlotGrid from "./SlotGrid";
+import {
+  Camera,
+  Shield,
+  Zap,
+  Home,
+  Accessibility,
+  Droplets,
+  LayoutList,
+  ParkingSquare,
+  BadgeDollarSign,
+  Map,
+  ImageIcon,
+  Check,
+  X,
+  Clock,
+  MapPin,
+  Car,
+  Bike,
+  ScrollText,
+} from "lucide-react";
 
 const amenityConfig = {
-  cctv: { icon: "📹", label: "CCTV Surveillance" },
-  security: { icon: "💂", label: "24hr Security" },
-  evCharging: { icon: "⚡", label: "EV Charging" },
-  covered: { icon: "🏠", label: "Covered Parking" },
-  wheelchair: { icon: "♿", label: "Wheelchair Access" },
-  carWash: { icon: "🚿", label: "Car Wash" },
+  cctv: { icon: Camera, label: "CCTV Surveillance" },
+  security: { icon: Shield, label: "24hr Security" },
+  evCharging: { icon: Zap, label: "EV Charging" },
+  covered: { icon: Home, label: "Covered Parking" },
+  wheelchair: { icon: Accessibility, label: "Wheelchair Access" },
+  carWash: { icon: Droplets, label: "Car Wash" },
 };
 
 const dayShort = {
@@ -22,11 +42,11 @@ const dayShort = {
 };
 
 const TABS = [
-  { id: "overview", label: "📋 Overview" },
-  { id: "slots", label: "🅿️ Slot Grid" },
-  { id: "pricing", label: "💰 Pricing" },
-  { id: "map", label: "🗺️ Location" },
-  { id: "photos", label: "📸 Photos" },
+  { id: "overview", label: "Overview", icon: LayoutList },
+  { id: "slots", label: "Slot Grid", icon: ParkingSquare },
+  { id: "pricing", label: "Pricing", icon: BadgeDollarSign },
+  { id: "map", label: "Location", icon: Map },
+  { id: "photos", label: "Photos", icon: ImageIcon },
 ];
 
 const ParkingTabs = ({
@@ -41,30 +61,35 @@ const ParkingTabs = ({
   availableslots,
   setSelectedVehicle,
 }) => {
- const updatedSlots = parking.slots.map((slot) => {
-  if ((bookedSlots ?? []).includes(slot.label)) {
-    return { ...slot, status: "occupied" };
-  }
-  return slot;
-});
+  const updatedSlots = parking.slots.map((slot) => {
+    if ((bookedSlots ?? []).includes(slot.label)) {
+      return { ...slot, status: "occupied" };
+    }
+    return slot;
+  });
+
   return (
     <>
       <div className="bg-white border-b border-gray-200 sticky top-[72px] z-30">
         <div className="max-w-7xl overflow-x-auto scrollbar-hidden mx-auto px-6 lg:px-16">
           <div className="flex gap-1">
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-5 py-4 text-sm font-semibold border-b-2 transition-all duration-200 ${
-                  activeTab === tab.id
-                    ? "border-[#22C55E] text-[#16A34A]"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-5 py-4 text-sm font-semibold border-b-2 transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? "border-[#22C55E] text-[#16A34A]"
+                      : "border-transparent text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <Icon size={15} />
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -82,43 +107,58 @@ const ParkingTabs = ({
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {Object.entries(parking.amenities || {}).map(
-                  ([key, enabled]) => (
-                    <div
-                      key={key}
-                      className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
-                        enabled
-                          ? "border-green-200 bg-green-50"
-                          : "border-gray-100 bg-gray-50 opacity-50"
-                      }`}
-                    >
-                      <span className="text-xl shrink-0">
-                        {amenityConfig[key]?.icon}
-                      </span>
-                      <div className="min-w-0">
-                        <p
-                          className={`text-xs font-bold truncate ${enabled ? "text-gray-900" : "text-gray-400"}`}
-                        >
-                          {amenityConfig[key]?.label}
-                        </p>
-                        <p
-                          className={`text-[10px] ${enabled ? "text-green-600" : "text-gray-400"}`}
-                        >
-                          {enabled ? "✓ Available" : "✗ Not Available"}
-                        </p>
+                  ([key, enabled]) => {
+                    const IconComp = amenityConfig[key]?.icon;
+                    return (
+                      <div
+                        key={key}
+                        className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
+                          enabled
+                            ? "border-green-200 bg-green-50"
+                            : "border-gray-100 bg-gray-50 opacity-50"
+                        }`}
+                      >
+                        {IconComp && (
+                          <IconComp
+                            size={18}
+                            className={`shrink-0 ${enabled ? "text-green-600" : "text-gray-400"}`}
+                          />
+                        )}
+                        <div className="min-w-0">
+                          <p
+                            className={`text-xs font-bold truncate ${enabled ? "text-gray-900" : "text-gray-400"}`}
+                          >
+                            {amenityConfig[key]?.label}
+                          </p>
+                          <p
+                            className={`text-[10px] flex items-center gap-1 ${enabled ? "text-green-600" : "text-gray-400"}`}
+                          >
+                            {enabled ? (
+                              <>
+                                <Check size={10} /> Available
+                              </>
+                            ) : (
+                              <>
+                                <X size={10} /> Not Available
+                              </>
+                            )}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ),
+                    );
+                  },
                 )}
               </div>
             </motion.div>
+
             {parking.rentalRules && (
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-white rounded-2xl border border-gray-200 p-6"
               >
-                <h2 className="text-base font-black text-gray-900 mb-4">
-                  📜 Rules & Policies
+                <h2 className="text-base font-black text-gray-900 mb-4 flex items-center gap-2">
+                  <ScrollText size={16} /> Rules & Policies
                 </h2>
                 <div className="flex flex-col gap-2">
                   {parking.rentalRules.split("\n").map((rule, i) => (
@@ -132,6 +172,7 @@ const ParkingTabs = ({
                 </div>
               </motion.div>
             )}
+
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -166,8 +207,8 @@ const ParkingTabs = ({
                   );
                 })}
               </div>
-              <p className="text-sm text-gray-500 mt-3">
-                🕐 Timings:{" "}
+              <p className="text-sm text-gray-500 mt-3 flex items-center gap-1.5">
+                <Clock size={14} /> Timings:{" "}
                 <strong className="text-gray-800">
                   {parking.availability?.openTime} –{" "}
                   {parking.availability?.closeTime}
@@ -231,8 +272,13 @@ const ParkingTabs = ({
                     key={v}
                     className="border-2 border-gray-100 rounded-2xl p-5 hover:border-green-300 transition-colors"
                   >
-                    <p className="text-sm font-bold text-gray-700 mb-4">
-                      {v === "4-wheeler" ? "🚗 4-Wheeler" : "🏍️ 2-Wheeler"}
+                    <p className="text-sm font-bold text-gray-700 mb-4 flex items-center gap-1.5">
+                      {v === "4-wheeler" ? (
+                        <Car size={15} />
+                      ) : (
+                        <Bike size={15} />
+                      )}
+                      {v === "4-wheeler" ? "4-Wheeler" : "2-Wheeler"}
                     </p>
                     <div className="flex flex-col gap-3">
                       {[
@@ -272,7 +318,9 @@ const ParkingTabs = ({
             <h2 className="text-base font-black text-gray-900 mb-2">
               Location on Map
             </h2>
-            <p className="text-sm text-gray-500 mb-4">📍 {parking.address}</p>
+            <p className="text-sm text-gray-500 mb-4 flex items-center gap-1.5">
+              <MapPin size={14} /> {parking.address}
+            </p>
             <div className="h-[400px] rounded-2xl overflow-hidden">
               <MapContainer
                 center={[parking.coordinates.lat, parking.coordinates.lng]}
@@ -289,6 +337,7 @@ const ParkingTabs = ({
             </div>
           </motion.div>
         )}
+
         {activeTab === "photos" && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}

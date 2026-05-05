@@ -104,6 +104,9 @@ export default function Payment() {
       });
   }, []);
 
+  console.log("userdetails:", userdetails);
+  console.log("total:", total);
+
   const handlePayment = async () => {
     try {
       const res = await fetch(
