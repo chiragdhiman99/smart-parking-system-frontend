@@ -63,7 +63,7 @@ const DriverDashboard = () => {
     if (!decoded) return;
     axios
       .get(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/auth/user/${decoded.userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -78,7 +78,7 @@ const DriverDashboard = () => {
     if (!userData?.email) return;
     axios
       .get(
-        "https://smart-parking-system-backend-oco6.onrender.com/api/bookings/get/booking",
+        "https://smart-parking-system-backend-production-6aac.up.railway.app/api/bookings/get/booking",
         {
           params: { userEmail: userData.email },
         },
@@ -93,7 +93,7 @@ const DriverDashboard = () => {
     if (!decoded) return;
     axios
       .get(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/notifications/${decoded.userId}`,
       )
       .then((res) => {
         setNotifications(res.data.filter((n) => n.role === "user"));
@@ -105,7 +105,7 @@ const DriverDashboard = () => {
 
   useEffect(() => {
     axios
-      .get("https://smart-parking-system-backend-oco6.onrender.com/api/reviews")
+      .get("https://smart-parking-system-backend-production-6aac.up.railway.app/api/reviews")
       .then((res) => {
         const reviews = res.data.reviews;
         setAllReviews(reviews);
@@ -121,7 +121,7 @@ const DriverDashboard = () => {
   const handleSave = () => {
     axios
       .put(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/auth/user/${decoded.userId}`,
         { fullName: editName, phone: editPhone, role: "driver" },
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -138,7 +138,7 @@ const DriverDashboard = () => {
     setReportSubmitting(true);
     try {
       await axios.post(
-        "https://smart-parking-system-backend-oco6.onrender.com/api/notifications",
+        "https://smart-parking-system-backend-production-6aac.up.railway.app/api/notifications",
         {
           userId: decoded.userId,
           message: `🚨 Issue Reported by ${userData.fullName}: "${reportText}" — Slot ${reportModal.slot} | Booking ID: ${reportModal._id}`,
@@ -158,7 +158,7 @@ const DriverDashboard = () => {
   const markAllRead = () => {
     axios
       .put(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/notifications/read/${decoded.userId}`,
       )
       .then(() =>
         setNotifications((prev) => prev.map((n) => ({ ...n, isread: true }))),
@@ -171,7 +171,7 @@ const DriverDashboard = () => {
   const handleCancelBooking = async (bookingid) => {
     try {
       await axios.put(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/bookings/cancel/${bookingid}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/bookings/cancel/${bookingid}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -190,7 +190,7 @@ const DriverDashboard = () => {
   const handlereviewsubmit = () => {
     axios
       .post(
-        "https://smart-parking-system-backend-oco6.onrender.com/api/reviews",
+        "https://smart-parking-system-backend-production-6aac.up.railway.app/api/reviews",
         {
           userId: decoded.userId,
           userName: userData.fullName,

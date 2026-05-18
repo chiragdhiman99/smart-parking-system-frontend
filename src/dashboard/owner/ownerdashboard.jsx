@@ -50,7 +50,7 @@ const OwnerDashboard = () => {
     if (!decoded) return;
     axios
       .get(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/auth/user/${decoded.userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -65,7 +65,7 @@ const OwnerDashboard = () => {
     if (!decoded?.userId) return;
     axios
       .get(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/owner/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings/owner/${decoded.userId}`,
       )
       .then((res) => setOwnerParking(res.data))
       .catch(() => setOwnerParking([]));
@@ -80,7 +80,7 @@ const OwnerDashboard = () => {
     if (!decoded?.userId) return;
     axios
       .get(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/bookings/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/bookings/${decoded.userId}`,
       )
       .then((res) => setUserBookings(res.data))
       .catch(() =>
@@ -92,7 +92,7 @@ const OwnerDashboard = () => {
     if (!decoded?.userId) return;
     axios
       .get(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/notifications/${decoded.userId}`,
       )
       .then((res) =>
         setNotifications(res.data.filter((n) => n.role === "owner")),
@@ -105,7 +105,7 @@ const OwnerDashboard = () => {
   const markAllRead = useCallback(() => {
     axios
       .put(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/notifications/read/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/notifications/read/${decoded.userId}`,
       )
       .then(() =>
         setNotifications((prev) => prev.map((n) => ({ ...n, isread: true }))),
@@ -118,7 +118,7 @@ const OwnerDashboard = () => {
   const handleSave = useCallback(() => {
     axios
       .put(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/auth/user/${decoded.userId}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/auth/user/${decoded.userId}`,
         { fullName: editName, phone: editPhone },
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -153,7 +153,7 @@ const OwnerDashboard = () => {
   const handleSaveEdit = useCallback(() => {
     axios
       .put(
-        `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${editingParking._id}`,
+        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings/${editingParking._id}`,
         {
           name: editForm.name,
           address: editForm.address,
@@ -194,7 +194,7 @@ const OwnerDashboard = () => {
     (parkingId) => {
       axios
         .delete(
-          `https://smart-parking-system-backend-oco6.onrender.com/api/parkings/${parkingId}`,
+          `https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings/${parkingId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },

@@ -163,7 +163,7 @@ const ReviewsPage = () => {
 
   useEffect(() => {
     axios
-      .get("https://smart-parking-system-backend-oco6.onrender.com/api/reviews")
+      .get("https://smart-parking-system-backend-production-6aac.up.railway.app/api/reviews")
       .then((res) => setReviews(res.data.reviews))
       .catch(() =>
         toast.error("Failed to load reviews. Please try again later."),

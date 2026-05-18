@@ -19,7 +19,7 @@ Multi-role system | Real-time availability | Google OAuth | Razorpay Payments | 
 <br/>
 
 [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_SlotHub-22c55e?style=for-the-badge)](https://smart-parking-system-frontend-kappa.vercel.app) 
-[![Backend API](https://img.shields.io/badge/⚡_Backend_API-Render-46e3b7?style=for-the-badge)](https://smart-parking-system-backend-oco6.onrender.com)
+[![Backend API](https://img.shields.io/badge/⚡_Backend_API-Render-46e3b7?style=for-the-badge)](https://smart-parking-system-backend-production-6aac.up.railway.app)
 
 </div>
 
@@ -316,7 +316,7 @@ src/
 | Layer | Platform | URL |
 |---|---|---|
 | Frontend | Vercel | [smart-parking-system-frontend-kappa.vercel.app](https://smart-parking-system-frontend-kappa.vercel.app) |
-| Backend | Render | [smart-parking-system-backend-oco6.onrender.com](https://smart-parking-system-backend-oco6.onrender.com) |
+| Backend | Render | [smart-parking-system-backend-oco6.onrender.com](https://smart-parking-system-backend-production-6aac.up.railway.app) |
 | Database | MongoDB Atlas | Cloud hosted |
 
 ---

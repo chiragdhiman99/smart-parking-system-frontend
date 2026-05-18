@@ -217,7 +217,7 @@ const AddParkingForm = ({ onClose, onSubmit, ownerid }) => {
     };
 
     axios
-      .post("https://smart-parking-system-backend-oco6.onrender.com/api/parkings", cleanedForm)
+      .post("https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings", cleanedForm)
       .then((res) => {
         onClose();
         toast.success("Parking request submitted successfully!");
@@ -229,7 +229,7 @@ const AddParkingForm = ({ onClose, onSubmit, ownerid }) => {
 
   useEffect(() => {
     axios
-      .get(`https://smart-parking-system-backend-oco6.onrender.com/api/pricing`, {
+      .get(`https://smart-parking-system-backend-production-6aac.up.railway.app/api/pricing`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

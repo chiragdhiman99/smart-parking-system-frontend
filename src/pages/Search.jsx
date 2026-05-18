@@ -121,7 +121,7 @@ const Search = () => {
   useEffect(() => {
     axios
       .get(
-        "https://smart-parking-system-backend-oco6.onrender.com/api/parkings",
+        "https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings",
       )
       .then((response) => {
         let data = response.data.filter(
