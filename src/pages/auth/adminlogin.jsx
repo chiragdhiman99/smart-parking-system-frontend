@@ -32,7 +32,7 @@ export default function AdminLogin() {
     setError("");
     try {
       const res = await axios.post(
-        "https://smart-parking-system-backend-production-6aac.up.railway.app/api/admin/login",
+        "https://smart-parking-system-backend-o9o9.onrender.com/api/admin/login",
         { email, password }
       );
       localStorage.setItem("adminToken", res.data.accessToken);

@@ -33,7 +33,7 @@ const ManageParkingLocations = () => {
   useEffect(() => {
     axios
       .get(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/parkings`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -48,7 +48,7 @@ const ManageParkingLocations = () => {
   const handleStatusChange = (parkingId, status) => {
     axios
       .put(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings/update/${parkingId}`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/parkings/update/${parkingId}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -68,7 +68,7 @@ const ManageParkingLocations = () => {
   const handleEditSave = (parkingId, updatedData) => {
     axios
       .put(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings/update/${parkingId}`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/parkings/update/${parkingId}`,
         updatedData,
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -84,7 +84,7 @@ const ManageParkingLocations = () => {
   const handleDelete = (parkingId) => {
     axios
       .delete(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings/${parkingId}`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/parkings/${parkingId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },

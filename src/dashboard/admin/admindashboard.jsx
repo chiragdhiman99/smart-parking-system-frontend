@@ -89,7 +89,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     axios
       .get(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/admin/user/${decoded?.id}`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/admin/user/${decoded?.id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -105,7 +105,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     axios
       .get(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/bookings/get/bookingsss`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/bookings/get/bookingsss`,
       )
       .then((res) => {
         const occupied = res.data.filter(
@@ -141,7 +141,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     axios
       .get(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/parkings`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -163,7 +163,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     axios
       .get(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/auth/users`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/auth/users`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -175,7 +175,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     axios
       .get(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/notifications`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/notifications`,
       )
       .then((res) => {
         const filtered = res.data
@@ -189,7 +189,7 @@ const AdminDashboard = () => {
   const markAllRead = () => {
     axios
       .put(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/notifications/read/role/admin`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/notifications/read/role/admin`,
       )
       .then(() =>
         setNotifications((prev) => prev.map((n) => ({ ...n, isread: true }))),

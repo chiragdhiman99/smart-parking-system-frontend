@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 import { io } from "socket.io-client";
-const socket = io("https://smart-parking-system-backend-production-6aac.up.railway.app");
+const socket = io("https://smart-parking-system-backend-o9o9.onrender.com");
 
 const paymentMethods = [
   {
@@ -103,7 +103,7 @@ export default function Payment() {
   useEffect(() => {
     axios
       .get(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/auth/user/${userid}`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/auth/user/${userid}`,
         { userid },
       )
       .then((res) => {
@@ -120,7 +120,7 @@ export default function Payment() {
   const handlePayment = async () => {
     try {
       const res = await fetch(
-        "https://smart-parking-system-backend-production-6aac.up.railway.app/api/payment/create-order",
+        "https://smart-parking-system-backend-o9o9.onrender.com/api/payment/create-order",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -139,7 +139,7 @@ export default function Payment() {
 
         handler: async function (response) {
           const verifyRes = await fetch(
-            "https://smart-parking-system-backend-production-6aac.up.railway.app/api/payment/verify",
+            "https://smart-parking-system-backend-o9o9.onrender.com/api/payment/verify",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -166,7 +166,7 @@ export default function Payment() {
 
           axios
             .post(
-              "https://smart-parking-system-backend-production-6aac.up.railway.app/api/bookings/create/booking",
+              "https://smart-parking-system-backend-o9o9.onrender.com/api/bookings/create/booking",
               {
                 userName: userinfo.fullName,
                 userEmail: userinfo.email,

@@ -28,7 +28,7 @@ const PricingGuidelines = () => {
   useEffect(() => {
     axios
       .get(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/pricing`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/pricing`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -80,7 +80,7 @@ const PricingGuidelines = () => {
     setSaving(true);
     axios
       .put(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/pricing`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/pricing`,
         guidelines,
         {
           headers: { Authorization: `Bearer ${token}` },

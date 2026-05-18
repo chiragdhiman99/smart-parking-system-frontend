@@ -24,7 +24,7 @@ const Locations = () => {
 
   useEffect(() => {
     const url =
-      "https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings";
+      "https://smart-parking-system-backend-o9o9.onrender.com/api/parkings";
     axios
       .get(url)
       .then((res) => {

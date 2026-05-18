@@ -98,7 +98,7 @@ const BookingCard = ({
       const token = localStorage.getItem("token");
 
       await axios.get(
-        "https://smart-parking-system-backend-production-6aac.up.railway.app/api/bookings/check/auth",
+        "https://smart-parking-system-backend-o9o9.onrender.com/api/bookings/check/auth",
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -161,14 +161,14 @@ const BookingCard = ({
 
   useEffect(() => {
     const url =
-      "https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings/" +
+      "https://smart-parking-system-backend-o9o9.onrender.com/api/parkings/" +
       parking._id;
     axios.put(url, { availableSlots: availableslots });
   }, [availableslots]);
 
   useEffect(() => {
     const url =
-      "https://smart-parking-system-backend-production-6aac.up.railway.app/api/bookings/parking/" +
+      "https://smart-parking-system-backend-o9o9.onrender.com/api/bookings/parking/" +
       parking._id;
     axios
       .get(url)

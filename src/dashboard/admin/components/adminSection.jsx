@@ -78,7 +78,7 @@ const AdminSections = ({
   const handleCancelBooking = async (bookingid) => {
     try {
       await axios.put(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/bookings/cancel/${bookingid}`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/bookings/cancel/${bookingid}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -97,7 +97,7 @@ const AdminSections = ({
   const handleVerifyOwner = (parkingId, status) => {
     axios
       .put(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/parkings/update/${parkingId}`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/parkings/update/${parkingId}`,
         { status },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -117,7 +117,7 @@ const AdminSections = ({
     setBanLoading(userId);
     axios
       .put(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/auth/user/${userId}/status`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/auth/user/${userId}/status`,
         { status: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -141,7 +141,7 @@ const AdminSections = ({
   const handleSave = () => {
     axios
       .put(
-        `https://smart-parking-system-backend-production-6aac.up.railway.app/api/auth/user/${decoded.userId}`,
+        `https://smart-parking-system-backend-o9o9.onrender.com/api/auth/user/${decoded.userId}`,
         { fullName: editName, phone: editPhone },
         { headers: { Authorization: `Bearer ${token}` } },
       )
